@@ -18,30 +18,37 @@ public class ConsoleView {
 
         while (true){
             System.out.println(game.getBord());
-            doeZet();
+
+            try {
+                doeZet();
+            } catch (OngeldigeZet ongeldigeZet) {
+                System.err.println("Ongeldige zet: Probeer alsjeblieft opnieuw.");
+            }
         }
     }
 
-    private void doeZet(){
+    private void doeZet() throws OngeldigeZet {
+        System.out.println(game.getKleurAanDeBeurt() + " is aan de beurt.");
         int rij = -1;
         int kolom = -1;
         while (rij < 0 || kolom < 0) {
-        System.out.println(game.getKleurAanDeBeurt() + " is aan de beurt.");
-        System.out.println("Welke positie wilt u een pion plaatsen? (N to exit)");
+
+
+        System.out.println("Welke positie wilt u een pion plaatsen? ");
         String positie = scanner.nextLine();
 
             try {
                 kolom = zetKolomLetterOmNaarGetal(positie.charAt(0));
                 rij = Integer.parseInt(positie.substring(1, 2)) - 1;
-            } catch (OngeldigeZet ongeldigeZet) {
-                System.err.println(ongeldigeZet);
+            } catch (OngeldigeKolomLetter ongeldigeKolomLetter) {
+                System.err.println(ongeldigeKolomLetter);
             }
         }
         game.zetPion(rij, kolom);
 
     }
 
-    private int zetKolomLetterOmNaarGetal(char letter) throws OngeldigeZet {
+    private int zetKolomLetterOmNaarGetal(char letter) throws OngeldigeKolomLetter {
 
         switch (letter) {
             case 'a':
@@ -61,7 +68,7 @@ public class ConsoleView {
             case 'h':
                 return 7;
             default:
-                throw new OngeldigeZet("Alleen letters van a tot h toegestaan.");
+                throw new OngeldigeKolomLetter("Alleen letters van a tot h toegestaan.");
         }
     }
     public static void main(String[] args) {
