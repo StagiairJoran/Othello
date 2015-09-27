@@ -55,7 +55,28 @@ public class OthelloFrame extends JFrame {
         }
         JPanel informationPanel = new JPanel();
         informationPanel.add(spelerLabel);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu file = new JMenu("Bestand");
 
+        JMenuItem nieuw = new JMenuItem("Nieuw");
+        nieuw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spel = new Spel();
+                herlaad();
+            }
+        });
+        JMenuItem exit = new JMenuItem("Afsluiten");
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        file.add(nieuw);
+        file.add(exit);
+        menuBar.add(file);
+        this.add(menuBar, BorderLayout.NORTH);
         this.add(panel, BorderLayout.CENTER);
         this.add(informationPanel, BorderLayout.SOUTH);
         this.pack();
@@ -75,7 +96,7 @@ public class OthelloFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Gelijkstand!");
 
             }
-        }else {
+        }
             for (OthelloButton button : othelloButtonList) {
                 Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
                 button.setKleur(kleur);
@@ -94,7 +115,7 @@ public class OthelloFrame extends JFrame {
                 spelerLabel.setText("Zwarte speler aan de beurt");
             }
             this.repaint();
-        }
+
     }
 
 

@@ -15,7 +15,7 @@ public class Spel {
 
     public Spel() {
         this.bord = new Bord();
-        this.kleurAanDeBeurt = Kleur.ZWART;
+        this.kleurAanDeBeurt = Kleur.WIT;
     }
 
     public Kleur getWinnaar(){
@@ -40,7 +40,7 @@ public class Spel {
         bord.zetPion(rij, kolom, kleurAanDeBeurt);
         veranderSpeler();
         if (!bord.zijnErGeldigeZetten(kleurAanDeBeurt)) {
-            veranderSpeler();
+          //  veranderSpeler();
         }
         controleerOfSpelGedaanIs();
     }
