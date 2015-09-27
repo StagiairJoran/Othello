@@ -25,6 +25,10 @@ public class Bord {
 
     }
 
+    public Kleur getKleurOpPositie(int rij, int kolom) {
+        return getSpeelvak(rij, kolom).getKleur();
+    }
+
     public int getScore(Kleur kleur) {
         int score = 0;
         for (int rij = 0; rij < 8; rij++) {
@@ -176,7 +180,7 @@ public class Bord {
 
     }
 
-    private boolean isGeldigeZet(int rij, int kolom, Kleur kleur) {
+    public boolean isGeldigeZet(int rij, int kolom, Kleur kleur) {
         Speelvak speelvak = getSpeelvak(rij, kolom);
         //controleer of positie wel leeg is
         if (speelvak.getKleur() != Kleur.LEEG) {

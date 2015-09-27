@@ -18,6 +18,16 @@ public class Spel {
         this.kleurAanDeBeurt = Kleur.ZWART;
     }
 
+    public Kleur getWinnaar(){
+        if(bord.getScore(Kleur.WIT) > bord.getScore(Kleur.ZWART)){
+            return Kleur.WIT;
+        }else if(bord.getScore(Kleur.WIT)< bord.getScore(Kleur.ZWART)){
+            return Kleur.ZWART;
+        }else {
+            return Kleur.LEEG;
+        }
+    }
+
     public Kleur getKleurAanDeBeurt() {
         return kleurAanDeBeurt;
     }

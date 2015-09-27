@@ -51,7 +51,7 @@ public class ConsoleView {
 
         System.out.println("Welke positie wilt u een pion plaatsen? ");
         String positie = scanner.nextLine();
-            
+
             try {
                 kolom = zetKolomLetterOmNaarGetal(positie.toLowerCase().charAt(0));
                 rij = Integer.parseInt(positie.substring(1, 2)) - 1;
