@@ -9,7 +9,6 @@ import java.util.HashMap;
 public class Bord {
     private HashMap rijen = new HashMap();
 
-
     public Bord() {
         for (int i = 0; i < 8; i++) {
             HashMap rij = new HashMap();
@@ -26,6 +25,47 @@ public class Bord {
 
     }
 
+    public int getScore(Kleur kleur) {
+        int score = 0;
+        for (int rij = 0; rij < 8; rij++) {
+            for (int kolom = 0; kolom < 8; kolom++) {
+                if (getSpeelvak(rij, kolom).getKleur() == kleur) {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
+
+    public boolean zijnErGeldigeZetten() {
+        for (int rij = 0; rij < 8; rij++) {
+            for (int kolom = 0; kolom < 8; kolom++) {
+                if (isGeldigeZet(rij, kolom, Kleur.WIT)) {
+                    return true;
+                }
+            }
+        }
+        for (int rij = 0; rij < 8; rij++) {
+            for (int kolom = 0; kolom < 8; kolom++) {
+                if (isGeldigeZet(rij, kolom, Kleur.ZWART)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean zijnErGeldigeZetten(Kleur kleur) {
+        for (int rij = 0; rij < 8; rij++) {
+            for (int kolom = 0; kolom < 8; kolom++) {
+                if (isGeldigeZet(rij, kolom, kleur)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void zetPion(int rij, int kolom, Kleur kleur) throws OngeldigeZet {
         Speelvak speelvak = getSpeelvak(rij, kolom);
         if (!isGeldigeZet(rij, kolom, kleur)) {
@@ -36,7 +76,7 @@ public class Bord {
         wijzigGeflankteSpelvakken(rij, kolom, kleur);
     }
 
-    private void wijzigSpelVakkenInRichting(int rij, int kolom, int rijRichting, int kolomRichting, Kleur kleurDieMoetGewijzigdWorden){
+    private void wijzigSpelVakkenInRichting(int rij, int kolom, int rijRichting, int kolomRichting, Kleur kleurDieMoetGewijzigdWorden) {
         Kleur nieuweKleur;
         if (kleurDieMoetGewijzigdWorden == Kleur.WIT) {
             nieuweKleur = Kleur.ZWART;
@@ -44,13 +84,13 @@ public class Bord {
             nieuweKleur = Kleur.WIT;
         }
         Speelvak speelvak = getSpeelvak(rij, kolom);
-        if(speelvak.getKleur() == kleurDieMoetGewijzigdWorden){
+        if (speelvak.getKleur() == kleurDieMoetGewijzigdWorden) {
             speelvak.setKleur(nieuweKleur);
             wijzigSpelVakkenInRichting(rij + rijRichting, kolom + kolomRichting, rijRichting, kolomRichting, kleurDieMoetGewijzigdWorden);
         }
     }
 
-    private void wijzigGeflankteSpelvakken(int rij, int kolom, Kleur kleur){
+    private void wijzigGeflankteSpelvakken(int rij, int kolom, Kleur kleur) {
         Kleur vijandigeKleur;
         if (kleur == Kleur.WIT) {
             vijandigeKleur = Kleur.ZWART;
@@ -59,51 +99,51 @@ public class Bord {
         }
         //controleer of er een veld van de andere kleur aangrenst
         if (controleerOfPositieVijandigeKleurBevat(rij, kolom - 1, vijandigeKleur)) {
-            if(controleerOfRichtingEindigtOpAndereKleur(rij, kolom -1, 0, -1, vijandigeKleur)){
-                wijzigSpelVakkenInRichting(rij, kolom -1, 0, -1, vijandigeKleur);
+            if (controleerOfRichtingEindigtOpAndereKleur(rij, kolom - 1, 0, -1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij, kolom - 1, 0, -1, vijandigeKleur);
             }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij, kolom + 1, vijandigeKleur)) {
-            if( controleerOfRichtingEindigtOpAndereKleur(rij, kolom +1, 0, +1, vijandigeKleur)){
-                wijzigSpelVakkenInRichting(rij, kolom +1, 0, +1, vijandigeKleur);
+            if (controleerOfRichtingEindigtOpAndereKleur(rij, kolom + 1, 0, +1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij, kolom + 1, 0, +1, vijandigeKleur);
             }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom, vijandigeKleur)) {
-           if(controleerOfRichtingEindigtOpAndereKleur(rij -1, kolom ,-1, 0, vijandigeKleur)){
-               wijzigSpelVakkenInRichting(rij -1, kolom ,-1, 0, vijandigeKleur);
-           }
+            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom, -1, 0, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij - 1, kolom, -1, 0, vijandigeKleur);
+            }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom, vijandigeKleur)) {
-           if(  controleerOfRichtingEindigtOpAndereKleur(rij +1, kolom ,+1, 0, vijandigeKleur)){
-               wijzigSpelVakkenInRichting(rij +1, kolom ,+1, 0, vijandigeKleur);
-           }
+            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom, +1, 0, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij + 1, kolom, +1, 0, vijandigeKleur);
+            }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom - 1, vijandigeKleur)) {
-            if( controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom -1, -1, -1, vijandigeKleur)){
-                wijzigSpelVakkenInRichting(rij - 1, kolom -1, -1, -1, vijandigeKleur);
+            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom - 1, -1, -1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij - 1, kolom - 1, -1, -1, vijandigeKleur);
             }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom + 1, vijandigeKleur)) {
-            if( controleerOfRichtingEindigtOpAndereKleur(rij +1, kolom +1,+1, +1, vijandigeKleur)){
-                wijzigSpelVakkenInRichting(rij +1, kolom +1,+1, +1, vijandigeKleur);
+            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom + 1, +1, +1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij + 1, kolom + 1, +1, +1, vijandigeKleur);
             }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom - 1, vijandigeKleur)) {
-            if( controleerOfRichtingEindigtOpAndereKleur(rij+1, kolom -1, +1, -1, vijandigeKleur)){
-                wijzigSpelVakkenInRichting(rij+1, kolom -1, +1, -1, vijandigeKleur);
+            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom - 1, +1, -1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij + 1, kolom - 1, +1, -1, vijandigeKleur);
             }
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom + 1, vijandigeKleur)) {
-           if(  controleerOfRichtingEindigtOpAndereKleur(rij -1, kolom +1, -1, +1, vijandigeKleur)){
-               wijzigSpelVakkenInRichting(rij -1, kolom +1, -1, +1, vijandigeKleur);
-           }
+            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom + 1, -1, +1, vijandigeKleur)) {
+                wijzigSpelVakkenInRichting(rij - 1, kolom + 1, -1, +1, vijandigeKleur);
+            }
 
         }
     }
@@ -113,18 +153,24 @@ public class Bord {
         return (Speelvak) row.get(kolom);
     }
 
-    private boolean controleerOfRichtingEindigtOpAndereKleur(int rij, int kolom, int rijRichting, int kolomRichting, Kleur andereKleur){
+    private boolean controleerOfRichtingEindigtOpAndereKleur(int rij, int kolom, int rijRichting, int kolomRichting, Kleur andereKleur) {
         Kleur kleur;
-        if(andereKleur == Kleur.WIT){
+        if (andereKleur == Kleur.WIT) {
             kleur = Kleur.ZWART;
-        }else {
+        } else {
             kleur = Kleur.WIT;
         }
-        if(this.getSpeelvak(rij + rijRichting, kolom + kolomRichting).getKleur() == kleur){
-            return true;
-        }else if(this.getSpeelvak(rij + rijRichting, kolom + kolomRichting).getKleur() == andereKleur){
-            return controleerOfRichtingEindigtOpAndereKleur(rij + rijRichting, kolom + kolomRichting, rijRichting, kolomRichting, andereKleur);
-        }else {
+        try {
+            Speelvak speelvak = this.getSpeelvak(rij + rijRichting, kolom + kolomRichting);
+
+            if (speelvak.getKleur() == kleur) {
+                return true;
+            } else if (speelvak.getKleur() == andereKleur) {
+                return controleerOfRichtingEindigtOpAndereKleur(rij + rijRichting, kolom + kolomRichting, rijRichting, kolomRichting, andereKleur);
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
             return false;
         }
 
@@ -145,35 +191,35 @@ public class Bord {
         }
         //controleer of er een veld van de andere kleur aangrenst
         if (controleerOfPositieVijandigeKleurBevat(rij, kolom - 1, vijandigeKleur)) {
-           return controleerOfRichtingEindigtOpAndereKleur(rij, kolom -1, 0, -1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij, kolom - 1, 0, -1, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij, kolom + 1, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij, kolom +1, 0, +1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij, kolom + 1, 0, +1, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij -1, kolom ,-1, 0, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom, -1, 0, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij +1, kolom ,+1, 0, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom, +1, 0, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom - 1, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom -1, -1, -1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom - 1, -1, -1, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom + 1, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij +1, kolom +1,+1, +1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom + 1, +1, +1, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom - 1, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij+1, kolom -1, +1, -1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom - 1, +1, -1, vijandigeKleur);
 
         }
         if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom + 1, vijandigeKleur)) {
-            return controleerOfRichtingEindigtOpAndereKleur(rij -1, kolom +1, -1, +1, vijandigeKleur);
+            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom + 1, -1, +1, vijandigeKleur);
 
         }
         return false;
@@ -223,7 +269,7 @@ public class Bord {
         return hetBord;
     }
 
-    public String geefBordMetHints(Kleur kleur){
+    public String geefBordMetHints(Kleur kleur) {
         String hetBord = ("\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n");
         for (int rij = 0; rij < 8; rij++) {
             hetBord += String.format("Rij %d | ", rij + 1);
@@ -238,9 +284,9 @@ public class Bord {
                         hetBord += " Z  | ";
                         break;
                     default:
-                        if(isGeldigeZet(rij, kolom, kleur)){
+                        if (isGeldigeZet(rij, kolom, kleur)) {
                             hetBord += " .  | ";
-                        }else{
+                        } else {
                             hetBord += "    | ";
                         }
                         break;

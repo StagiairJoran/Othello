@@ -1,6 +1,7 @@
 package view;
 
-import model.Game;
+import model.Kleur;
+import model.Spel;
 import model.OngeldigeZet;
 
 import java.util.Scanner;
@@ -11,24 +12,38 @@ import java.util.Scanner;
  */
 public class ConsoleView {
     private Scanner scanner = new Scanner(System.in);
-    private Game game = new Game();
+    private Spel spel = new Spel();
 
     private void startSpel(){
         System.out.println("Welkom bij Othello! Wit mag beginnen!");
-
-        while (true){
-            System.out.println(game.getBord().geefBordMetHints(game.getKleurAanDeBeurt()));
+        boolean spelIsGedaan = spel.isSpelGedaan();
+        while (!spelIsGedaan){
+            System.out.print("\t\tWIT: " + spel.getScore(Kleur.WIT) + "\t\t\t ZWART: " + spel.getScore(Kleur.ZWART) + "\n");
+            System.out.println(spel.getBord().geefBordMetHints(spel.getKleurAanDeBeurt()));
 
             try {
                 doeZet();
             } catch (OngeldigeZet ongeldigeZet) {
                 System.err.println("Ongeldige zet: Probeer alsjeblieft opnieuw.");
             }
+            spelIsGedaan = spel.isSpelGedaan();
+        }
+        eindigSpel();
+    }
+
+    private void eindigSpel(){
+        int scoreWit = spel.getScore(Kleur.WIT);
+        int scoreZwart = spel.getScore(Kleur.ZWART);
+        if(scoreWit > scoreZwart){
+            System.out.println("Wit heeft gewonnen!");
+        }else {
+            System.out.println("Zwart heeft gewonnen!");
+
         }
     }
 
     private void doeZet() throws OngeldigeZet {
-        System.out.println(game.getKleurAanDeBeurt() + " is aan de beurt.");
+        System.out.println(spel.getKleurAanDeBeurt() + " is aan de beurt.");
         int rij = -1;
         int kolom = -1;
         while (rij < 0 || kolom < 0) {
@@ -36,7 +51,7 @@ public class ConsoleView {
 
         System.out.println("Welke positie wilt u een pion plaatsen? ");
         String positie = scanner.nextLine();
-
+            
             try {
                 kolom = zetKolomLetterOmNaarGetal(positie.toLowerCase().charAt(0));
                 rij = Integer.parseInt(positie.substring(1, 2)) - 1;
@@ -44,7 +59,7 @@ public class ConsoleView {
                 System.err.println(ongeldigeKolomLetter);
             }
         }
-        game.zetPion(rij, kolom);
+        spel.zetPion(rij, kolom);
 
     }
 
