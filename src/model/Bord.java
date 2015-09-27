@@ -222,4 +222,35 @@ public class Bord {
         hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
         return hetBord;
     }
+
+    public String geefBordMetHints(Kleur kleur){
+        String hetBord = ("\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n");
+        for (int rij = 0; rij < 8; rij++) {
+            hetBord += String.format("Rij %d | ", rij + 1);
+            for (int kolom = 0; kolom < 8; kolom++) {
+
+                Speelvak speelvak = this.getSpeelvak(rij, kolom);
+                switch (speelvak.getKleur()) {
+                    case WIT:
+                        hetBord += " W  | ";
+                        break;
+                    case ZWART:
+                        hetBord += " Z  | ";
+                        break;
+                    default:
+                        if(isGeldigeZet(rij, kolom, kleur)){
+                            hetBord += " .  | ";
+                        }else{
+                            hetBord += "    | ";
+                        }
+                        break;
+
+                }
+
+            }
+            hetBord += "\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n";
+        }
+        hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
+        return hetBord;
+    }
 }

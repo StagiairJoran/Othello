@@ -17,7 +17,7 @@ public class ConsoleView {
         System.out.println("Welkom bij Othello! Wit mag beginnen!");
 
         while (true){
-            System.out.println(game.getBord());
+            System.out.println(game.getBord().geefBordMetHints(game.getKleurAanDeBeurt()));
 
             try {
                 doeZet();
@@ -38,7 +38,7 @@ public class ConsoleView {
         String positie = scanner.nextLine();
 
             try {
-                kolom = zetKolomLetterOmNaarGetal(positie.charAt(0));
+                kolom = zetKolomLetterOmNaarGetal(positie.toLowerCase().charAt(0));
                 rij = Integer.parseInt(positie.substring(1, 2)) - 1;
             } catch (OngeldigeKolomLetter ongeldigeKolomLetter) {
                 System.err.println(ongeldigeKolomLetter);
