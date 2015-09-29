@@ -1,7 +1,5 @@
 package view.swing;
 
-import javafx.scene.layout.Border;
-import model.Bord;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
@@ -12,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by jorandeboever
@@ -25,7 +23,7 @@ public class OthelloFrame extends JFrame {
     JLabel spelerLabel = new JLabel("Zwarte speler aan de beurt");
 
     public OthelloFrame() throws HeadlessException {
-        this.setTitle("Othello");
+        this.setTitle("Othellooo");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

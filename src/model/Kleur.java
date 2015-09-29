@@ -1,8 +1,7 @@
 package model;
 
 /**
- * Created by jorandeboever
- * on 27/09/15.
+ * Created by JoachimDs on 29/09/2015.
  */
 public enum Kleur {
     WIT, ZWART, LEEG;
