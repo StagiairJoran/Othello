@@ -28,9 +28,9 @@ public class OthelloFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        JPanel panel = new JPanel(new GridLayout(8, 8));
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        JPanel panel = new JPanel(new GridLayout(spel.getBord().getGrootteBord(), spel.getBord().getGrootteBord()));
+        for (int i = 0; i < spel.getBord().getGrootteBord(); i++) {
+            for (int j = 0; j < spel.getBord().getGrootteBord(); j++) {
                 OthelloButton button = new OthelloButton(i, j);
                 button.addMouseListener(new OthelloButtonListener());
 

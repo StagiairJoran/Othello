@@ -11,19 +11,21 @@ import java.util.List;
 public class Bord {
     private HashMap rijen = new HashMap();
 
+    private int grootteBord = 4;
+
     public Bord() {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < grootteBord; i++) {
             HashMap rij = new HashMap();
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < grootteBord; j++) {
                 rij.put(j, new Speelvak());
             }
             rijen.put(i, rij);
         }
 
-        getSpeelvak(3, 3).setKleur(Kleur.WIT);
-        getSpeelvak(4,4).setKleur(Kleur.WIT);
-        getSpeelvak(4, 3).setKleur(Kleur.ZWART);
-        getSpeelvak(3, 4).setKleur(Kleur.ZWART);
+        getSpeelvak((grootteBord/2)-1, (grootteBord / 2) -1).setKleur(Kleur.WIT);
+        getSpeelvak((grootteBord/2),(grootteBord/2)).setKleur(Kleur.WIT);
+        getSpeelvak((grootteBord/2), (grootteBord/2)-1).setKleur(Kleur.ZWART);
+        getSpeelvak((grootteBord/2)-1, (grootteBord/2)).setKleur(Kleur.ZWART);
 
     }
 
@@ -33,8 +35,8 @@ public class Bord {
 
     public int getScore(Kleur kleur) {
         int score = 0;
-        for (int rij = 0; rij < 8; rij++) {
-            for (int kolom = 0; kolom < 8; kolom++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
                 if (getSpeelvak(rij, kolom).getKleur() == kleur) {
                     score++;
                 }
@@ -44,15 +46,15 @@ public class Bord {
     }
 
     public boolean zijnErGeldigeZetten() {
-        for (int rij = 0; rij < 8; rij++) {
-            for (int kolom = 0; kolom < 8; kolom++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
                 if (isGeldigeZet(rij, kolom, Kleur.WIT)) {
                     return true;
                 }
             }
         }
-        for (int rij = 0; rij < 8; rij++) {
-            for (int kolom = 0; kolom < 8; kolom++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
                 if (isGeldigeZet(rij, kolom, Kleur.ZWART)) {
                     return true;
                 }
@@ -62,8 +64,8 @@ public class Bord {
     }
 
     public boolean zijnErGeldigeZetten(Kleur kleur) {
-        for (int rij = 0; rij < 8; rij++) {
-            for (int kolom = 0; kolom < 8; kolom++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
                 if (isGeldigeZet(rij, kolom, kleur)) {
                     return true;
                 }
@@ -115,54 +117,7 @@ public class Bord {
 
             }
         }
-        /*if (controleerOfPositieVijandigeKleurBevat(rij, kolom - 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij, kolom - 1, 0, -1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij, kolom - 1, 0, -1, vijandigeKleur);
-            }
 
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij, kolom + 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij, kolom + 1, 0, +1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij, kolom + 1, 0, +1, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom, -1, 0, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij - 1, kolom, -1, 0, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom, +1, 0, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij + 1, kolom, +1, 0, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom - 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom - 1, -1, -1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij - 1, kolom - 1, -1, -1, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom + 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom + 1, +1, +1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij + 1, kolom + 1, +1, +1, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom - 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom - 1, +1, -1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij + 1, kolom - 1, +1, -1, vijandigeKleur);
-            }
-
-        }
-        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom + 1, vijandigeKleur)) {
-            if (controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom + 1, -1, +1, vijandigeKleur)) {
-                wijzigSpelVakkenInRichting(rij - 1, kolom + 1, -1, +1, vijandigeKleur);
-            }
-
-        }*/
     }
 
     private Speelvak getSpeelvak(int rij, int kolom) {
@@ -218,38 +173,6 @@ public class Bord {
             }
         }
 
-//        if (controleerOfPositieVijandigeKleurBevat(rij, kolom - 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij, kolom - 1, 0, -1, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij, kolom + 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij, kolom + 1, 0, +1, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom, -1, 0, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom, +1, 0, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom - 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom - 1, -1, -1, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom + 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom + 1, +1, +1, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij + 1, kolom - 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij + 1, kolom - 1, +1, -1, vijandigeKleur);
-//
-//        }
-//        if (controleerOfPositieVijandigeKleurBevat(rij - 1, kolom + 1, vijandigeKleur)) {
-//            return controleerOfRichtingEindigtOpAndereKleur(rij - 1, kolom + 1, -1, +1, vijandigeKleur);
-//
-//        }
         return false;
 
     }
@@ -272,9 +195,9 @@ public class Bord {
     @Override
     public String toString() {
         String hetBord = ("\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n");
-        for (int rij = 0; rij < 8; rij++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
             hetBord += String.format("Rij %d | ", rij + 1);
-            for (int kolom = 0; kolom < 8; kolom++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
 
                 Speelvak speelvak = this.getSpeelvak(rij, kolom);
                 switch (speelvak.getKleur()) {
@@ -297,11 +220,15 @@ public class Bord {
         return hetBord;
     }
 
+    public int getGrootteBord() {
+        return grootteBord;
+    }
+
     public String geefBordMetHints(Kleur kleur) {
         String hetBord = ("\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n");
-        for (int rij = 0; rij < 8; rij++) {
+        for (int rij = 0; rij < grootteBord; rij++) {
             hetBord += String.format("Rij %d | ", rij + 1);
-            for (int kolom = 0; kolom < 8; kolom++) {
+            for (int kolom = 0; kolom < grootteBord; kolom++) {
 
                 Speelvak speelvak = this.getSpeelvak(rij, kolom);
                 switch (speelvak.getKleur()) {

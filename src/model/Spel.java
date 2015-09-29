@@ -40,7 +40,7 @@ public class Spel {
         bord.zetPion(rij, kolom, kleurAanDeBeurt);
         veranderSpeler();
         if (!bord.zijnErGeldigeZetten(kleurAanDeBeurt)) {
-          //  veranderSpeler();
+            veranderSpeler();
         }
         controleerOfSpelGedaanIs();
     }
