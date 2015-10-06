@@ -97,7 +97,8 @@ public class OthelloFrame extends JFrame {
             }
         }else {
             Computer computer = new Computer();
-            //TODO
+
+            System.out.println("Heuristic value wit: " + computer.getHeuristicValue(spel.getBord(), Kleur.WIT));
         }
         for (OthelloButton button : othelloButtonList) {
             Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
