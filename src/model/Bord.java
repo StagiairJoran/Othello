@@ -117,19 +117,14 @@ public class Bord {
                 if (controleerOfRichtingEindigtOpAndereKleur(rij + richting.y, kolom + richting.x, richting, vijandigeKleur)) {
                     wijzigSpelVakkenInRichting(rij + richting.y, kolom + richting.x, richting, vijandigeKleur);
                 }
-
             }
         }
 
     }
 
     private boolean controleerOfRichtingEindigtOpAndereKleur(int rij, int kolom, Richting richting, Kleur andereKleur) {
-        Kleur kleur;
-        if (andereKleur == Kleur.WIT) {
-            kleur = Kleur.ZWART;
-        } else {
-            kleur = Kleur.WIT;
-        }
+        Kleur kleur = Kleur.andereKleur(andereKleur);
+
         try {
             Speelvak speelvak = speelvakken[rij + richting.y][kolom + richting.x];
 
