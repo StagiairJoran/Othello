@@ -9,11 +9,14 @@ import java.util.List;
  * on 27/09/15.
  */
 public class Bord {
-    private HashMap rijen = new HashMap();
-
+    private HashMap rijen;
+    private int aantalKerenZwartWint;
+    private int aantalKerenWitWint;
     private int grootteBord = 4;
+    public static int aantalBorden = 0;
 
     public Bord() {
+        rijen = new HashMap();
         for (int i = 0; i < grootteBord; i++) {
             HashMap rij = new HashMap();
             for (int j = 0; j < grootteBord; j++) {
@@ -22,15 +25,61 @@ public class Bord {
             rijen.put(i, rij);
         }
 
-        getSpeelvak((grootteBord/2)-1, (grootteBord / 2) -1).setKleur(Kleur.WIT);
-        getSpeelvak((grootteBord/2),(grootteBord/2)).setKleur(Kleur.WIT);
-        getSpeelvak((grootteBord/2), (grootteBord/2)-1).setKleur(Kleur.ZWART);
-        getSpeelvak((grootteBord/2)-1, (grootteBord/2)).setKleur(Kleur.ZWART);
+        getSpeelvak((grootteBord / 2) - 1, (grootteBord / 2) - 1).setKleur(Kleur.WIT);
+        getSpeelvak((grootteBord / 2), (grootteBord / 2)).setKleur(Kleur.WIT);
+        getSpeelvak((grootteBord / 2), (grootteBord / 2) - 1).setKleur(Kleur.ZWART);
+        getSpeelvak((grootteBord / 2) - 1, (grootteBord / 2)).setKleur(Kleur.ZWART);
 
+        aantalBorden++;
     }
+
+    public Bord(Bord anderBord) {
+        rijen = new HashMap();
+        for (int i = 0; i < grootteBord; i++) {
+            HashMap rij = new HashMap();
+            for (int j = 0; j < grootteBord; j++) {
+                rij.put(j, new Speelvak(anderBord.getSpeelvak(i, j).getKleur()));
+            }
+            rijen.put(i, rij);
+        }
+        aantalBorden++;
+    }
+
 
     public Kleur getKleurOpPositie(int rij, int kolom) {
         return getSpeelvak(rij, kolom).getKleur();
+    }
+
+    public HashMap getRijen() {
+        return rijen;
+    }
+
+    public int getAantalKerenKleurWint(Kleur kleur) {
+        if (kleur == Kleur.WIT) {
+            return aantalKerenWitWint;
+        } else {
+            return aantalKerenZwartWint;
+        }
+    }
+
+    public void verhoogAantalKerenKleurWint(Kleur kleur) {
+        if (kleur == Kleur.WIT) {
+            aantalKerenWitWint++;
+        } else {
+            aantalKerenZwartWint++;
+        }
+    }
+
+    public void setAantalKerenWitWint(int aantalKerenWitWint) {
+        this.aantalKerenWitWint = aantalKerenWitWint;
+    }
+
+    public int getAantalKerenZwartWint() {
+        return aantalKerenZwartWint;
+    }
+
+    public void setAantalKerenZwartWint(int aantalKerenZwartWint) {
+        this.aantalKerenZwartWint = aantalKerenZwartWint;
     }
 
     public int getScore(Kleur kleur) {
@@ -109,7 +158,7 @@ public class Bord {
         //controleer of er een veld van de andere kleur aangrenst
 
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
-        for(Richting richting: mogelijkeRichtingen){
+        for (Richting richting : mogelijkeRichtingen) {
             if (controleerOfPositieVijandigeKleurBevat(rij + richting.y, kolom + richting.x, vijandigeKleur)) {
                 if (controleerOfRichtingEindigtOpAndereKleur(rij + richting.y, kolom + richting.x, richting, vijandigeKleur)) {
                     wijzigSpelVakkenInRichting(rij + richting.y, kolom + richting.x, richting, vijandigeKleur);
@@ -164,9 +213,9 @@ public class Bord {
         //controleer of er een veld van de andere kleur aangrenst
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
 
-        for(Richting richting: mogelijkeRichtingen){
+        for (Richting richting : mogelijkeRichtingen) {
             if (controleerOfPositieVijandigeKleurBevat(rij + richting.y, kolom + richting.x, vijandigeKleur)) {
-                if(controleerOfRichtingEindigtOpAndereKleur(rij + richting.y, kolom + richting.x, richting, vijandigeKleur)){
+                if (controleerOfRichtingEindigtOpAndereKleur(rij + richting.y, kolom + richting.x, richting, vijandigeKleur)) {
                     return true;
                 }
 
@@ -190,6 +239,18 @@ public class Bord {
             return false;
         }
 
+    }
+
+    public List<Zet> geefGeldigeZetten(Kleur kleur) {
+        List<Zet> geldigeZetten = new ArrayList<>();
+        for (int i = 0; i < getGrootteBord(); i++) {
+            for (int j = 0; j < getGrootteBord(); j++) {
+                if (this.isGeldigeZet(i, j, kleur)) {
+                    geldigeZetten.add(new Zet(i, j));
+                }
+            }
+        }
+        return geldigeZetten;
     }
 
     @Override

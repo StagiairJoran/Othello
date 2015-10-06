@@ -1,8 +1,10 @@
 package view.swing;
 
+import ai.Computer;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
+import model.Zet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,37 +85,60 @@ public class OthelloFrame extends JFrame {
         herlaad();
     }
 
-    public void herlaad() {
-        if(spel.isSpelGedaan()){
-            if(spel.getWinnaar() == Kleur.WIT){
-                JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
-            }else if(spel.getWinnaar() == Kleur.ZWART){
-                JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
 
-            }else {
+    public void herlaad() {
+        boolean spelIsGedaan = spel.isSpelGedaan();
+
+        repaint();
+
+
+
+        if (spelIsGedaan) {
+            if (spel.getWinnaar() == Kleur.WIT) {
+                JOptionPane.showMessageDialog(null, "Je hebt gewonnen");
+            } else if (spel.getWinnaar() == Kleur.ZWART) {
+                JOptionPane.showMessageDialog(null, "De computer heeft gewonnen");
+
+            } else {
                 JOptionPane.showMessageDialog(null, "Gelijkstand!");
 
             }
+        }else {
+            if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
+
+                spel.doeComputerZet();
+                herlaad();
+            }
         }
-            for (OthelloButton button : othelloButtonList) {
-                Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
-                button.setKleur(kleur);
-                button.setText("");
-                if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
-
-                    button.setText("X");
 
 
-                }
+
+
+
+    }
+
+    public void repaint() {
+        if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
+            spelerLabel.setText("Witte speler aan de beurt");
+
+        } else {
+            spelerLabel.setText("Zwarte speler aan de beurt");
+
+        }
+
+        for (OthelloButton button : othelloButtonList) {
+            Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
+            button.setKleur(kleur);
+            button.setText("");
+            if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
+
+                button.setText("X");
+
 
             }
-            if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
-                spelerLabel.setText("Witte speler aan de beurt");
-            } else {
-                spelerLabel.setText("Zwarte speler aan de beurt");
-            }
-            this.repaint();
 
+        }
+        super.repaint();
     }
 
 

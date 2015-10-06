@@ -1,5 +1,7 @@
 package model;
 
+import ai.Computer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +20,12 @@ public class Spel {
         this.kleurAanDeBeurt = Kleur.WIT;
     }
 
-    public Kleur getWinnaar(){
-        if(bord.getScore(Kleur.WIT) > bord.getScore(Kleur.ZWART)){
+    public Kleur getWinnaar() {
+        if (bord.getScore(Kleur.WIT) > bord.getScore(Kleur.ZWART)) {
             return Kleur.WIT;
-        }else if(bord.getScore(Kleur.WIT)< bord.getScore(Kleur.ZWART)){
+        } else if (bord.getScore(Kleur.WIT) < bord.getScore(Kleur.ZWART)) {
             return Kleur.ZWART;
-        }else {
+        } else {
             return Kleur.LEEG;
         }
     }
@@ -43,6 +45,14 @@ public class Spel {
             veranderSpeler();
         }
         controleerOfSpelGedaanIs();
+    }
+
+    public void doeComputerZet() {
+        Computer ai = new Computer(Kleur.ZWART);
+        Zet zet = ai.doeZet(this.getBord());
+        if (zet != null) {
+            this.zetPion(zet.getRij(), zet.getKolom());
+        }
     }
 
     private void controleerOfSpelGedaanIs() {

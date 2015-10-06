@@ -13,6 +13,10 @@ public class Speelvak {
         this.kleur = Kleur.LEEG;
     }
 
+    public Speelvak(Kleur kleur) {
+
+        this.kleur = kleur;
+    }
     public void setKleur(Kleur kleur) {
         this.kleur = kleur;
     }
