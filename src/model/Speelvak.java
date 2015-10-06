@@ -7,9 +7,12 @@ package model;
 public class Speelvak {
 
     private Kleur kleur;
+    private final int rij;
+    private final int kolom;
 
-    public Speelvak() {
-
+    public Speelvak(int rij, int kolom) {
+        this.rij = rij;
+        this.kolom = kolom;
         this.kleur = Kleur.LEEG;
     }
 
