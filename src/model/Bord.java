@@ -1,5 +1,8 @@
 package model;
 
+import ai.Zet;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,11 +28,11 @@ public class Bord {
         initBord();
     }
 
-    public Bord(Bord nieuwBord) {
-        super();
+    public Bord(Bord oudBord) {
+        this();
         for (int i = 0; i < grootteBord; i++) {
             for (int j = 0; j < grootteBord; j++) {
-                speelvakken[i][j].setKleur(nieuwBord.speelvakken[i][j].getKleur());
+                speelvakken[i][j].setKleur(oudBord.speelvakken[i][j].getKleur());
             }
         }
     }
@@ -184,6 +187,18 @@ public class Bord {
 
     public int getGrootteBord() {
         return grootteBord;
+    }
+
+    public List<Zet> geefGeldigeZetten(Kleur kleur) {
+        List<Zet> geldigeZetten = new ArrayList<>();
+        for (int i = 0; i < getGrootteBord(); i++) {
+            for (int j = 0; j < getGrootteBord(); j++) {
+                if (this.isGeldigeZet(i, j, kleur)) {
+                    geldigeZetten.add(new Zet(i, j));
+                }
+            }
+        }
+        return geldigeZetten;
     }
 
     public String geefBordMetHints(Kleur kleur) {

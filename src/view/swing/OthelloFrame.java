@@ -1,6 +1,8 @@
 package view.swing;
 
+import ai.Computer;
 import ai.HeuristicCalculator;
+import ai.Zet;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
@@ -95,10 +97,6 @@ public class OthelloFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Gelijkstand!");
 
             }
-        }else {
-            HeuristicCalculator heuristicCalculator = new HeuristicCalculator();
-
-            System.out.println("Heuristic value wit: " + heuristicCalculator.getHeuristicValue(spel.getBord(), Kleur.WIT));
         }
         for (OthelloButton button : othelloButtonList) {
             Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
@@ -118,6 +116,13 @@ public class OthelloFrame extends JFrame {
             spelerLabel.setText("Zwarte speler aan de beurt");
         }
         this.repaint();
+        if(spel.getKleurAanDeBeurt() == Kleur.ZWART){
+            Computer computer = new Computer();
+            Zet computerZet = computer.doeZet(spel.getBord(), Kleur.ZWART);
+            spel.zetPion(computerZet.getRij(), computerZet.getKolom());
+
+            herlaad();
+        }
 
     }
 
