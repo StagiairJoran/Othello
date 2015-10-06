@@ -89,7 +89,7 @@ public class Bord {
     }
 
     private void wijzigSpelVakkenInRichting(int rij, int kolom, Richting richting, Kleur kleurDieMoetGewijzigdWorden) {
-        Kleur nieuweKleur = andereKleur(kleurDieMoetGewijzigdWorden);
+        Kleur nieuweKleur = Kleur.andereKleur(kleurDieMoetGewijzigdWorden);
 
         Speelvak speelvak = speelvakken[rij][kolom];
         if (speelvak.getKleur() == kleurDieMoetGewijzigdWorden) {
@@ -99,7 +99,7 @@ public class Bord {
     }
 
     private void wijzigGeflankteSpelvakken(int rij, int kolom, Kleur kleur) {
-        Kleur vijandigeKleur = andereKleur(kleur);
+        Kleur vijandigeKleur = Kleur.andereKleur(kleur);
 
         //controleer of er een veld van de andere kleur aangrenst
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
@@ -150,7 +150,7 @@ public class Bord {
             return false;
         }
 
-        Kleur vijandigeKleur = andereKleur(kleur);
+        Kleur vijandigeKleur = Kleur.andereKleur(kleur);
 
         //controleer of er een veld van de andere kleur aangrenst
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
@@ -210,13 +210,5 @@ public class Bord {
         }
         hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
         return hetBord;
-    }
-
-    private Kleur andereKleur(Kleur kleur){
-        if (kleur == Kleur.WIT) {
-            return Kleur.ZWART;
-        } else {
-            return Kleur.WIT;
-        }
     }
 }
