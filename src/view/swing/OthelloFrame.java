@@ -1,5 +1,6 @@
 package view.swing;
 
+import ai.Computer;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
@@ -84,35 +85,38 @@ public class OthelloFrame extends JFrame {
     }
 
     public void herlaad() {
-        if(spel.isSpelGedaan()){
-            if(spel.getWinnaar() == Kleur.WIT){
+        if (spel.isSpelGedaan()) {
+            if (spel.getWinnaar() == Kleur.WIT) {
                 JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
-            }else if(spel.getWinnaar() == Kleur.ZWART){
+            } else if (spel.getWinnaar() == Kleur.ZWART) {
                 JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
 
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Gelijkstand!");
 
             }
+        }else {
+            Computer computer = new Computer();
+            //TODO
         }
-            for (OthelloButton button : othelloButtonList) {
-                Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
-                button.setKleur(kleur);
-                button.setText("");
-                if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
+        for (OthelloButton button : othelloButtonList) {
+            Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
+            button.setKleur(kleur);
+            button.setText("");
+            if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
 
-                    button.setText("X");
+                button.setText("X");
 
-
-                }
 
             }
-            if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
-                spelerLabel.setText("Witte speler aan de beurt");
-            } else {
-                spelerLabel.setText("Zwarte speler aan de beurt");
-            }
-            this.repaint();
+
+        }
+        if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
+            spelerLabel.setText("Witte speler aan de beurt");
+        } else {
+            spelerLabel.setText("Zwarte speler aan de beurt");
+        }
+        this.repaint();
 
     }
 
