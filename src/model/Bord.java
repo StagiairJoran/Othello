@@ -25,6 +25,15 @@ public class Bord {
         initBord();
     }
 
+    public Bord(Bord nieuwBord) {
+        super();
+        for (int i = 0; i < grootteBord; i++) {
+            for (int j = 0; j < grootteBord; j++) {
+                speelvakken[i][j].setKleur(nieuwBord.speelvakken[i][j].getKleur());
+            }
+        }
+    }
+
     private void initBord() {
         //De 4 eerste zetten die er altijd moeten zijn
         speelvakken[(grootteBord/2)-1][(grootteBord / 2) -1].setKleur(Kleur.WIT);
@@ -113,10 +122,6 @@ public class Bord {
         }
 
     }
-
-    /*private Speelvak getSpeelvak(int rij, int kolom) {
-        return speelvakken[rij][kolom];
-    }*/
 
     private boolean controleerOfRichtingEindigtOpAndereKleur(int rij, int kolom, Richting richting, Kleur andereKleur) {
         Kleur kleur;
