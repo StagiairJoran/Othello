@@ -1,7 +1,6 @@
 package view.swing;
 
 import ai.Computer;
-import ai.HeuristicCalculator;
 import ai.Zet;
 import model.Kleur;
 import model.OngeldigeZet;
@@ -116,7 +115,7 @@ public class OthelloFrame extends JFrame {
             spelerLabel.setText("Zwarte speler aan de beurt");
         }
         this.repaint();
-        if(spel.getKleurAanDeBeurt() == Kleur.ZWART){
+        if(!spel.isSpelGedaan() && spel.getKleurAanDeBeurt() == Kleur.ZWART){
             Computer computer = new Computer();
             Zet computerZet = computer.doeZet(spel.getBord(), Kleur.ZWART);
             spel.zetPion(computerZet.getRij(), computerZet.getKolom());

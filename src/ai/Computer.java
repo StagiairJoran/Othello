@@ -1,5 +1,8 @@
 package ai;
 
+import ai.heuristic.api.HeuristicCalculator;
+import ai.heuristic.impl.CompleteHeuristicCalculator;
+import ai.heuristic.impl.SimpleHeuristicCalculator;
 import model.Bord;
 import model.Kleur;
 import model.OngeldigeZet;
@@ -14,7 +17,7 @@ public class Computer {
     private HeuristicCalculator heuristicCalculator;
 
     public Computer() {
-        this.heuristicCalculator = new HeuristicCalculator();
+        this.heuristicCalculator = new CompleteHeuristicCalculator();
     }
 
     public Zet doeZet(Bord bord, Kleur kleur){

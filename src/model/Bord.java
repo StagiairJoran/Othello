@@ -11,7 +11,7 @@ import java.util.List;
  * on 27/09/15.
  */
 public class Bord {
-    private int grootteBord = 4;
+    private int grootteBord = 8;
     private HashMap rijen = new HashMap();
     private Speelvak[][] speelvakken ;
 
