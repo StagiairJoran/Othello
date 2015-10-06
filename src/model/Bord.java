@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,35 +8,40 @@ import java.util.List;
  * on 27/09/15.
  */
 public class Bord {
-    private HashMap rijen = new HashMap();
-
     private int grootteBord = 4;
+    private HashMap rijen = new HashMap();
+    private Speelvak[][] speelvakken ;
+
 
     public Bord() {
+        speelvakken = new Speelvak[grootteBord][grootteBord];
+
         for (int i = 0; i < grootteBord; i++) {
-            HashMap rij = new HashMap();
             for (int j = 0; j < grootteBord; j++) {
-                rij.put(j, new Speelvak());
+                speelvakken[i][j] = new Speelvak(i, j);
             }
-            rijen.put(i, rij);
         }
 
-        getSpeelvak((grootteBord/2)-1, (grootteBord / 2) -1).setKleur(Kleur.WIT);
-        getSpeelvak((grootteBord/2),(grootteBord/2)).setKleur(Kleur.WIT);
-        getSpeelvak((grootteBord/2), (grootteBord/2)-1).setKleur(Kleur.ZWART);
-        getSpeelvak((grootteBord/2)-1, (grootteBord/2)).setKleur(Kleur.ZWART);
+        initBord();
+    }
 
+    private void initBord() {
+        //De 4 eerste zetten die er altijd moeten zijn
+        speelvakken[(grootteBord/2)-1][(grootteBord / 2) -1].setKleur(Kleur.WIT);
+        speelvakken[(grootteBord/2)][(grootteBord / 2)].setKleur(Kleur.WIT);
+        speelvakken[(grootteBord/2)][(grootteBord / 2) -1].setKleur(Kleur.ZWART);
+        speelvakken[(grootteBord/2)-1][(grootteBord / 2)].setKleur(Kleur.ZWART);
     }
 
     public Kleur getKleurOpPositie(int rij, int kolom) {
-        return getSpeelvak(rij, kolom).getKleur();
+        return speelvakken[rij][kolom].getKleur();
     }
 
     public int getScore(Kleur kleur) {
         int score = 0;
         for (int rij = 0; rij < grootteBord; rij++) {
             for (int kolom = 0; kolom < grootteBord; kolom++) {
-                if (getSpeelvak(rij, kolom).getKleur() == kleur) {
+                if (speelvakken[rij][kolom].getKleur() == kleur) {
                     score++;
                 }
             }
@@ -75,7 +79,7 @@ public class Bord {
     }
 
     public void zetPion(int rij, int kolom, Kleur kleur) throws OngeldigeZet {
-        Speelvak speelvak = getSpeelvak(rij, kolom);
+        Speelvak speelvak = speelvakken[rij][kolom];
         if (!isGeldigeZet(rij, kolom, kleur)) {
             throw new OngeldigeZet("Ongeldige zet");
         }
@@ -85,13 +89,9 @@ public class Bord {
     }
 
     private void wijzigSpelVakkenInRichting(int rij, int kolom, Richting richting, Kleur kleurDieMoetGewijzigdWorden) {
-        Kleur nieuweKleur;
-        if (kleurDieMoetGewijzigdWorden == Kleur.WIT) {
-            nieuweKleur = Kleur.ZWART;
-        } else {
-            nieuweKleur = Kleur.WIT;
-        }
-        Speelvak speelvak = getSpeelvak(rij, kolom);
+        Kleur nieuweKleur = andereKleur(kleurDieMoetGewijzigdWorden);
+
+        Speelvak speelvak = speelvakken[rij][kolom];
         if (speelvak.getKleur() == kleurDieMoetGewijzigdWorden) {
             speelvak.setKleur(nieuweKleur);
             wijzigSpelVakkenInRichting(rij + richting.y, kolom + richting.x, richting, kleurDieMoetGewijzigdWorden);
@@ -99,15 +99,9 @@ public class Bord {
     }
 
     private void wijzigGeflankteSpelvakken(int rij, int kolom, Kleur kleur) {
-        Kleur vijandigeKleur;
-        if (kleur == Kleur.WIT) {
-            vijandigeKleur = Kleur.ZWART;
-        } else {
-            vijandigeKleur = Kleur.WIT;
-        }
+        Kleur vijandigeKleur = andereKleur(kleur);
 
         //controleer of er een veld van de andere kleur aangrenst
-
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
         for(Richting richting: mogelijkeRichtingen){
             if (controleerOfPositieVijandigeKleurBevat(rij + richting.y, kolom + richting.x, vijandigeKleur)) {
@@ -120,10 +114,9 @@ public class Bord {
 
     }
 
-    private Speelvak getSpeelvak(int rij, int kolom) {
-        HashMap row = (HashMap) rijen.get(rij);
-        return (Speelvak) row.get(kolom);
-    }
+    /*private Speelvak getSpeelvak(int rij, int kolom) {
+        return speelvakken[rij][kolom];
+    }*/
 
     private boolean controleerOfRichtingEindigtOpAndereKleur(int rij, int kolom, Richting richting, Kleur andereKleur) {
         Kleur kleur;
@@ -133,7 +126,7 @@ public class Bord {
             kleur = Kleur.WIT;
         }
         try {
-            Speelvak speelvak = this.getSpeelvak(rij + richting.y, kolom + richting.x);
+            Speelvak speelvak = speelvakken[rij + richting.y][kolom + richting.x];
 
             if (speelvak.getKleur() == kleur) {
                 return true;
@@ -144,23 +137,21 @@ public class Bord {
             }
         } catch (NullPointerException e) {
             return false;
+        } catch (ArrayIndexOutOfBoundsException e){
+            return false;
         }
 
     }
 
     public boolean isGeldigeZet(int rij, int kolom, Kleur kleur) {
-        Speelvak speelvak = getSpeelvak(rij, kolom);
+        Speelvak speelvak = speelvakken[rij][kolom];
         //controleer of positie wel leeg is
         if (speelvak.getKleur() != Kleur.LEEG) {
             return false;
         }
 
-        Kleur vijandigeKleur;
-        if (kleur == Kleur.WIT) {
-            vijandigeKleur = Kleur.ZWART;
-        } else {
-            vijandigeKleur = Kleur.WIT;
-        }
+        Kleur vijandigeKleur = andereKleur(kleur);
+
         //controleer of er een veld van de andere kleur aangrenst
         List<Richting> mogelijkeRichtingen = Richting.getMogelijkeRichtingen();
 
@@ -172,52 +163,18 @@ public class Bord {
 
             }
         }
-
         return false;
-
     }
 
     private boolean controleerOfPositieVijandigeKleurBevat(int rij, int kolom, Kleur vijandigeKleur) {
         try {
-            Speelvak speelvak = getSpeelvak(rij, kolom);
-            if (speelvak.getKleur() == vijandigeKleur) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NullPointerException e) {
+            Speelvak speelvak = speelvakken[rij][kolom];
+            return speelvak.getKleur() == vijandigeKleur;
+        } catch (ArrayIndexOutOfBoundsException e) {
             //positie bestaat niet
             return false;
         }
 
-    }
-
-    @Override
-    public String toString() {
-        String hetBord = ("\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n");
-        for (int rij = 0; rij < grootteBord; rij++) {
-            hetBord += String.format("Rij %d | ", rij + 1);
-            for (int kolom = 0; kolom < grootteBord; kolom++) {
-
-                Speelvak speelvak = this.getSpeelvak(rij, kolom);
-                switch (speelvak.getKleur()) {
-                    case WIT:
-                        hetBord += " W  | ";
-                        break;
-                    case ZWART:
-                        hetBord += " Z  | ";
-                        break;
-                    default:
-                        hetBord += "    | ";
-                        break;
-
-                }
-
-            }
-            hetBord += "\n      +-----+-----+-----+-----+-----+-----+-----+-----+\n";
-        }
-        hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
-        return hetBord;
     }
 
     public int getGrootteBord() {
@@ -230,7 +187,7 @@ public class Bord {
             hetBord += String.format("Rij %d | ", rij + 1);
             for (int kolom = 0; kolom < grootteBord; kolom++) {
 
-                Speelvak speelvak = this.getSpeelvak(rij, kolom);
+                Speelvak speelvak = speelvakken[rij][kolom];
                 switch (speelvak.getKleur()) {
                     case WIT:
                         hetBord += " W  | ";
@@ -253,5 +210,13 @@ public class Bord {
         }
         hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
         return hetBord;
+    }
+
+    private Kleur andereKleur(Kleur kleur){
+        if (kleur == Kleur.WIT) {
+            return Kleur.ZWART;
+        } else {
+            return Kleur.WIT;
+        }
     }
 }
