@@ -85,18 +85,12 @@ public class OthelloFrame extends JFrame {
         herlaad();
     }
 
-    public void herlaad() {
-        if (spel.isSpelGedaan()) {
-            if (spel.getWinnaar() == Kleur.WIT) {
-                JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
-            } else if (spel.getWinnaar() == Kleur.ZWART) {
-                JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
+    private void doeComputerZet() {
+        spel.doeComputerZet();
+    }
 
-            } else {
-                JOptionPane.showMessageDialog(null, "Gelijkstand!");
+    private void herlaad() {
 
-            }
-        }
         for (OthelloButton button : othelloButtonList) {
             Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
             button.setKleur(kleur);
@@ -109,22 +103,28 @@ public class OthelloFrame extends JFrame {
             }
 
         }
+
         if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
             spelerLabel.setText("Witte speler aan de beurt");
         } else {
             spelerLabel.setText("Zwarte speler aan de beurt");
         }
+        this.revalidate();
         this.repaint();
-        if(!spel.isSpelGedaan() && spel.getKleurAanDeBeurt() == Kleur.ZWART){
-            Computer computer = new Computer();
-            Zet computerZet = computer.doeZet(spel.getBord(), Kleur.ZWART);
-            spel.zetPion(computerZet.getRij(), computerZet.getKolom());
 
-            herlaad();
+
+        if (spel.isSpelGedaan()) {
+            if (spel.getWinnaar() == Kleur.WIT) {
+                JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
+            } else if (spel.getWinnaar() == Kleur.ZWART) {
+                JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Gelijkstand!");
+
+            }
         }
-
     }
-
 
     class OthelloButtonListener implements MouseListener {
 
@@ -135,6 +135,10 @@ public class OthelloFrame extends JFrame {
             try {
                 spel.zetPion(othelloButton.getRij(), othelloButton.getKolom());
                 herlaad();
+                if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
+                    spel.doeComputerZet();
+                    herlaad();
+                }
             } catch (OngeldigeZet ongeldigeZet) {
                 System.err.println("Ongeldige zet");
             }

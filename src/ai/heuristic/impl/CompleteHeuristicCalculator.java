@@ -8,6 +8,7 @@ import model.Kleur;
  * Created by jorandeboever
  * on 6/10/15.
  * Source: https://kartikkukreja.wordpress.com/2013/03/30/heuristic-function-for-reversiothello/
+ * Paper: http://courses.cs.washington.edu/courses/cse573/04au/Project/mini1/RUSSIA/Final_Paper.pdf
  */
 public class CompleteHeuristicCalculator implements HeuristicCalculator {
     public double getHeuristicValue(Bord bord, Kleur kleur) {
@@ -17,7 +18,6 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
         double stabilityHeuristicValue = getStabilityHeuristicValue(bord, kleur);
         double cornerClosenessHeuristicValue = getCornerClosenessHeuristicValue(bord, kleur);
 
-        System.out.println("Coin Heuristic Value = " + coinParityHeuristicValue);
         return (10 * coinParityHeuristicValue) + (78.922 * mobilityHeuristicValue) + (801.724 * cornerHeuristicValue) + stabilityHeuristicValue + (382.026 * cornerClosenessHeuristicValue);
     }
 

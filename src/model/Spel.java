@@ -1,5 +1,8 @@
 package model;
 
+import ai.Computer;
+import ai.Zet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,14 @@ public class Spel {
         } else {
             kleurAanDeBeurt = Kleur.WIT;
         }
+    }
+
+    public void doeComputerZet(){
+        Computer computer = new Computer();
+        Zet computerZet = computer.doeZet(bord, kleurAanDeBeurt);
+        zetPion(computerZet.getRij(), computerZet.getKolom());
+        System.out.println("Computer doet zet naar: rij=" + computerZet.getRij() + ", kolom=" + computerZet.getKolom());
+
     }
 
     public Bord getBord() {
