@@ -1,6 +1,6 @@
 package view.swing;
 
-import ai.Computer;
+import ai.HeuristicCalculator;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
@@ -96,9 +96,9 @@ public class OthelloFrame extends JFrame {
 
             }
         }else {
-            Computer computer = new Computer();
+            HeuristicCalculator heuristicCalculator = new HeuristicCalculator();
 
-            System.out.println("Heuristic value wit: " + computer.getHeuristicValue(spel.getBord(), Kleur.WIT));
+            System.out.println("Heuristic value wit: " + heuristicCalculator.getHeuristicValue(spel.getBord(), Kleur.WIT));
         }
         for (OthelloButton button : othelloButtonList) {
             Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());

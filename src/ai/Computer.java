@@ -8,27 +8,7 @@ import model.Kleur;
  * on 6/10/15.
  */
 public class Computer {
-    public double getHeuristicValue(Bord bord, Kleur kleur) {
-        double coinParityHeuristicValue = getCoinParityHeuristicValue(bord, kleur);
-
-        return coinParityHeuristicValue;
-    }
-
-    private double getCoinParityHeuristicValue(Bord bord, Kleur kleur) {
-        int aantalMax = 0;
-        int aantalMin = 0;
-
-        for (int i = 0; i < bord.getGrootteBord(); i++) {
-            for (int j = 0; j < bord.getGrootteBord(); j++) {
-                if (bord.getKleurOpPositie(i, j) == kleur) {
-                    aantalMax++;
-                } else if (bord.getKleurOpPositie(i, j) != Kleur.LEEG) {
-                    aantalMin++;
-                }
-            }
-        }
-
-        return 100 * (aantalMax - aantalMin) / (aantalMax + aantalMin);
+    public void doeZet(Bord bord, Kleur kleur){
 
     }
 }
