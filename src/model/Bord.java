@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Bord {
     private int grootteBord = 8;
-    private HashMap rijen = new HashMap();
+    private int nodeDiepte = 0;
     protected Speelvak[][] speelvakken ;
 
 
@@ -35,6 +35,11 @@ public class Bord {
                 speelvakken[i][j].setKleur(oudBord.speelvakken[i][j].getKleur());
             }
         }
+        this.nodeDiepte = oudBord.nodeDiepte + 1;
+    }
+
+    public int getNodeDiepte() {
+        return nodeDiepte;
     }
 
     private void initBord() {
