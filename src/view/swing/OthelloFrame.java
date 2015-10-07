@@ -1,7 +1,7 @@
 package view.swing;
 
-import ai.Computer;
-import ai.Zet;
+import ai.computer.impl.HeuristicComputer;
+import ai.computer.impl.MiniMaxComputer;
 import model.Kleur;
 import model.OngeldigeZet;
 import model.Spel;
@@ -22,33 +22,19 @@ public class OthelloFrame extends JFrame {
 
     Spel spel = new Spel();
     java.util.List<OthelloButton> othelloButtonList = new ArrayList<>();
-    JLabel spelerLabel = new JLabel("Zwarte speler aan de beurt");
+    JLabel spelerLabel = new JLabel("Witte speler aan de beurt");
 
     public OthelloFrame() throws HeadlessException {
         this.setTitle("Othellooo");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         JPanel panel = new JPanel(new GridLayout(spel.getBord().getGrootteBord(), spel.getBord().getGrootteBord()));
         for (int i = 0; i < spel.getBord().getGrootteBord(); i++) {
             for (int j = 0; j < spel.getBord().getGrootteBord(); j++) {
                 OthelloButton button = new OthelloButton(i, j);
                 button.addMouseListener(new OthelloButtonListener());
-
-
                 button.setEnabled(false);
-                if (spel.getBord().getKleurOpPositie(i, j) == Kleur.WIT) {
-
-                } else if (spel.getBord().getKleurOpPositie(i, j) == Kleur.ZWART) {
-
-
-                } else {
-                    if (spel.getBord().isGeldigeZet(i, j, spel.getKleurAanDeBeurt())) {
-                    }
-
-                }
-
                 panel.add(button);
                 othelloButtonList.add(button);
             }
@@ -80,14 +66,29 @@ public class OthelloFrame extends JFrame {
         this.add(panel, BorderLayout.CENTER);
         this.add(informationPanel, BorderLayout.SOUTH);
         this.pack();
+
         this.setSize(600, 600);
+        this.setLocationRelativeTo(null);
+
         this.setVisible(true);
+
         herlaad();
+
+        Object[] options = {"MiniMax", "Heuristic"};
+        int keuze = JOptionPane.showOptionDialog(this,
+                "Tegen welke computer wil je spelen?",
+                "Computerkeuze",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.DEFAULT_OPTION,
+                null,
+                options, options[0]);
+        if (keuze == 1) {
+            spel.setComputer(new HeuristicComputer(Kleur.ZWART));
+        } else {
+            spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
+        }
     }
 
-    private void doeComputerZet() {
-        spel.doeComputerZet();
-    }
 
     private void herlaad() {
 

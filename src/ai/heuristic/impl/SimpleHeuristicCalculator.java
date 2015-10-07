@@ -7,6 +7,11 @@ import model.Kleur;
 /**
  * Created by jorandeboever
  * on 6/10/15.
+ * SimpelHeuristicCalculator berekent een heuristische waarde van een spelbord
+ * Gebaseerd op 3 factoren:
+ ** Aantal vakken elke speler bezit
+ ** Aantal zetten dat elke speler kan doen
+ ** Aantal hoeken van een spelbord dat elke speler bezit
  */
 public class SimpleHeuristicCalculator implements HeuristicCalculator {
     public double getHeuristicValue(Bord bord, Kleur kleur) {
@@ -17,8 +22,10 @@ public class SimpleHeuristicCalculator implements HeuristicCalculator {
         return coinParityHeuristicValue + mobilityHeuristicValue + cornerHeuristicValue;
     }
 
-
-
+    /*
+     * Berekent een heuristische waarde gebaseerd de hoeken van een spelbord
+     * Kijkt naar hoeveel hoeken elke speler bevat
+     */
     private double getCornerHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMax = 0;
         int aantalMin = 0;
@@ -55,6 +62,10 @@ public class SimpleHeuristicCalculator implements HeuristicCalculator {
         return 0;
     }
 
+    /*
+     * Berekent heuristische waarde gebaseerd op aantal vakken
+     * Kijkt naar hoeveel vakken elke speler heeft
+     */
     private double getCoinParityHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMax = 0;
         int aantalMin = 0;
@@ -74,6 +85,10 @@ public class SimpleHeuristicCalculator implements HeuristicCalculator {
 
     }
 
+    /*
+     * Berekent een heuristische waarde gebaseerd op mobility
+     * Kijkt naar hoeveel zetten elke speler kan doen
+     */
     private double getMobilityHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMovesMax = 0;
         int aantalMovesMin = 0;

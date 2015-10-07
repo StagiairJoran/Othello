@@ -7,10 +7,18 @@ import model.Kleur;
 /**
  * Created by jorandeboever
  * on 6/10/15.
+ * CompleteHeuristicCalculator berekent een heuristische waarde van een spelbord
+ * Gebaseerd op 6 factoren:
+ * * Aantal vakken elke speler bezit
+ * * Aantal zetten dat elke speler kan doen
+ * * Aantal hoeken van een spelbord dat elke speler bezit
+ * * Aantal vakken naast een hoek dat elke speler bezit (telt negatief)
+ * * Stabiliteit van de vakken die in bezit zijn
  * Source: https://kartikkukreja.wordpress.com/2013/03/30/heuristic-function-for-reversiothello/
  * Paper: http://courses.cs.washington.edu/courses/cse573/04au/Project/mini1/RUSSIA/Final_Paper.pdf
  */
 public class CompleteHeuristicCalculator implements HeuristicCalculator {
+
     public double getHeuristicValue(Bord bord, Kleur kleur) {
         double coinParityHeuristicValue = getCoinParityHeuristicValue(bord, kleur);
         double mobilityHeuristicValue = getMobilityHeuristicValue(bord, kleur);
@@ -21,7 +29,11 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
         return (10 * coinParityHeuristicValue) + (78.922 * mobilityHeuristicValue) + (801.724 * cornerHeuristicValue) + stabilityHeuristicValue + (382.026 * cornerClosenessHeuristicValue);
     }
 
-
+    /*
+     * Berekent een heuristische waarde gebaseerd op de stabiliteit van de spelvakken in bezit
+     * Kijkt naar de positie van elk spelvak ten opzichte van het bord
+     * Kijkt naar welke spelvakken kunnen geflankt worden
+     */
     private double getStabilityHeuristicValue(Bord bord, Kleur kleur) {
         int stabilityHeuristicValue = 0;
         int aantalMax = 0;
@@ -74,6 +86,10 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
         return (stabilityHeuristicValue * 10) + (74.396 * frontTileHeuristicValue);
     }
 
+    /*
+     * Berekent een heuristische waarde gebaseerd op de hoeken van een spelbord
+     * Kijkt naar hoeveel hoeken elke speler bevat
+     */
     private double getCornerOccupancyHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMax = 0;
         int aantalMin = 0;
@@ -107,6 +123,10 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
         return 25 * (aantalMax - aantalMin);
     }
 
+    /*
+     * Berekent een heuristische waarde gebaseerd de vakken die grenzen aan een hoek
+     * Kijkt naar hoeveel vakken elke speler in bezit heeft die naast een open hoek liggen
+     */
     private double getCornerClosenessHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMax = 0;
         int aantalMin = 0;
@@ -198,6 +218,10 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
         return -12.5 * (aantalMax - aantalMin);
     }
 
+    /*
+    * Berekent heuristische waarde gebaseerd op aantal vakken
+    * Kijkt naar hoeveel vakken elke speler heeft
+    */
     private double getCoinParityHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMax = 0;
         int aantalMin = 0;
@@ -221,6 +245,10 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
 
     }
 
+    /*
+    * Berekent een heuristische waarde gebaseerd op mobility
+    * Kijkt naar hoeveel zetten elke speler kan doen
+    */
     private double getMobilityHeuristicValue(Bord bord, Kleur kleur) {
         int aantalMovesMax = 0;
         int aantalMovesMin = 0;

@@ -1,10 +1,8 @@
 package model;
 
-import ai.Computer;
+import ai.computer.api.Computer;
 import ai.Zet;
-
-import java.util.ArrayList;
-import java.util.List;
+import ai.computer.impl.MiniMaxComputer;
 
 /**
  * Created by jorandeboever
@@ -15,10 +13,12 @@ public class Spel {
     private Bord bord;
     private Kleur kleurAanDeBeurt;
     private boolean isSpelGedaan = false;
+    private Computer computer;
 
     public Spel() {
         this.bord = new Bord();
         this.kleurAanDeBeurt = Kleur.WIT;
+        this.computer = new MiniMaxComputer(Kleur.ZWART);
     }
 
     public Kleur getWinnaar(){
@@ -63,12 +63,14 @@ public class Spel {
     }
 
     public void doeComputerZet(){
-        Computer computer = new Computer(kleurAanDeBeurt);
-       // Zet computerZet = computer.doeZet(bord, kleurAanDeBeurt);
-        Zet computerZet = computer.doeMinimaxZet(bord);
+        Zet computerZet = computer.berekenZet(bord);
         zetPion(computerZet.getRij(), computerZet.getKolom());
         System.out.println("Computer doet zet naar: rij=" + computerZet.getRij() + ", kolom=" + computerZet.getKolom());
 
+    }
+
+    public void setComputer(Computer computer) {
+        this.computer = computer;
     }
 
     public Bord getBord() {
