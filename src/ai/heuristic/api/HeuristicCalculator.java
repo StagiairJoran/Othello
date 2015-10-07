@@ -9,4 +9,5 @@ import model.Kleur;
  */
 public interface HeuristicCalculator {
     double getHeuristicValue(Bord bord, Kleur kleur);
+
 }

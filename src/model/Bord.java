@@ -13,7 +13,7 @@ import java.util.List;
 public class Bord {
     private int grootteBord = 8;
     private HashMap rijen = new HashMap();
-    private Speelvak[][] speelvakken ;
+    protected Speelvak[][] speelvakken ;
 
 
     public Bord() {

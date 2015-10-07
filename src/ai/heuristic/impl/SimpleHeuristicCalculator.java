@@ -14,7 +14,6 @@ public class SimpleHeuristicCalculator implements HeuristicCalculator {
         double mobilityHeuristicValue = getMobilityHeuristicValue(bord, kleur);
         double cornerHeuristicValue = getCornerHeuristicValue(bord, kleur);
 
-        System.out.println("Coin Heuristic Value = " + coinParityHeuristicValue);
         return coinParityHeuristicValue + mobilityHeuristicValue + cornerHeuristicValue;
     }
 

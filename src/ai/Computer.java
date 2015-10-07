@@ -24,7 +24,7 @@ public class Computer {
         List<Zet> zetten = bord.geefGeldigeZetten(kleur);
 
         Zet besteZet = null;
-        double bestHeuristicValue = (double) -999999999;
+        double bestHeuristicValue = Double.NEGATIVE_INFINITY;
         System.out.println("----------------------------------------------");
 
         for(Zet zet: zetten){
