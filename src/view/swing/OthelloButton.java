@@ -24,22 +24,19 @@ public class OthelloButton extends JLabel {
         this.setHorizontalAlignment(CENTER);
         this.setForeground(Color.RED);
         this.setFont(new Font("Arial", Font.BOLD, 32));
+        this.setOpaque(true);
 
     }
 
-    public OthelloButton(String text, int rij, int kolom) {
-        super(text);
-        this.rij = rij;
-        this.kolom = kolom;
-    }
+
 
     public void setKleur(Kleur kleur) {
         this.kleur = kleur;
-        if(kleur == Kleur.ZWART){
+        if (kleur == Kleur.ZWART) {
             this.setBackground(Color.BLACK);
-        }else if(kleur == Kleur.WIT){
+        } else if (kleur == Kleur.WIT) {
             this.setBackground(Color.WHITE);
-        }else {
+        } else {
             setBackground(Color.LIGHT_GRAY);
         }
     }

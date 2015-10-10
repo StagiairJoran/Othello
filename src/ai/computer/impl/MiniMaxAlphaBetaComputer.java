@@ -44,12 +44,11 @@ public class MiniMaxAlphaBetaComputer implements Computer{
                 ongeldigeZet.printStackTrace();
             }
 
-            zet.setHeuristicValue(alphaBeta(duplicaat, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Kleur.andereKleur(computerKleur)));
-            if (zet.getHeuristicValue() > besteWaarde || besteZet == null) {
+            zet.setWaarde(alphaBeta(duplicaat, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Kleur.andereKleur(computerKleur)));
+            if (zet.getWaarde() > besteWaarde || besteZet == null) {
                 besteZet = zet;
-                besteWaarde = zet.getHeuristicValue();
+                besteWaarde = zet.getWaarde();
             }
-
 
         }
         return besteZet;

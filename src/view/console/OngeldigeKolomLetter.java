@@ -1,4 +1,4 @@
-package view;
+package view.console;
 
 /**
  * Created by jorandeboever

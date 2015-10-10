@@ -43,11 +43,11 @@ public class HeuristicComputer implements Computer {
                 ongeldigeZet.printStackTrace();
             }
 
-            zet.setHeuristicValue(heuristicCalculator.getHeuristicValue(duplicaat, computerKleur));
-            System.out.println("Zet rij= " + zet.getRij() + ", kolom = " + zet.getKolom() + "Heuristic Value = " + zet.getHeuristicValue());
-            if(zet.getHeuristicValue() > bestHeuristicValue || besteZet == null){
+            zet.setWaarde(heuristicCalculator.getHeuristicValue(duplicaat, computerKleur));
+            System.out.println("Zet rij= " + zet.getRij() + ", kolom = " + zet.getKolom() + "Heuristic Value = " + zet.getWaarde());
+            if(zet.getWaarde() > bestHeuristicValue || besteZet == null){
                 besteZet = zet;
-                bestHeuristicValue = zet.getHeuristicValue();
+                bestHeuristicValue = zet.getWaarde();
             }
 
 

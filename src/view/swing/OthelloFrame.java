@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -21,27 +23,41 @@ import java.util.ArrayList;
  */
 public class OthelloFrame extends JFrame {
 
-    Spel spel = new Spel();
-    java.util.List<OthelloButton> othelloButtonList = new ArrayList<>();
-    JLabel spelerLabel = new JLabel("Witte speler aan de beurt");
+    Spel spel;
+    JLabel spelerLabel;
+    OthelloBord othelloBord;
 
     public OthelloFrame() throws HeadlessException {
-        this.setTitle("Othellooo");
+        this.spel = new Spel();
+        this.spelerLabel = new JLabel("Witte speler aan de beurt");
+        othelloBord = new OthelloBord(spel, this);
+        init();
+    }
 
+    private void init() {
+        this.setTitle("Othello");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel(new GridLayout(spel.getBord().getGrootteBord(), spel.getBord().getGrootteBord()));
-        for (int i = 0; i < spel.getBord().getGrootteBord(); i++) {
-            for (int j = 0; j < spel.getBord().getGrootteBord(); j++) {
-                OthelloButton button = new OthelloButton(i, j);
-                button.addMouseListener(new OthelloButtonListener());
-                button.setEnabled(false);
-                panel.add(button);
-                othelloButtonList.add(button);
-            }
-        }
         JPanel informationPanel = new JPanel();
         informationPanel.add(spelerLabel);
+        this.add(maakMenu(), BorderLayout.NORTH);
+        this.add(othelloBord, BorderLayout.CENTER);
+        this.add(informationPanel, BorderLayout.SOUTH);
+        this.pack();
+
+        this.setSize(600, 600);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+
+
+        herlaad();
+        toonComputerOpties();
+
+    }
+
+    /*
+     * Maakt klein menubar met menu-items
+     */
+    private JMenuBar maakMenu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("Bestand");
 
@@ -50,6 +66,7 @@ public class OthelloFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spel = new Spel();
+                othelloBord.setSpel(spel);
                 herlaad();
                 toonComputerOpties();
             }
@@ -64,21 +81,14 @@ public class OthelloFrame extends JFrame {
         file.add(nieuw);
         file.add(exit);
         menuBar.add(file);
-        this.add(menuBar, BorderLayout.NORTH);
-        this.add(panel, BorderLayout.CENTER);
-        this.add(informationPanel, BorderLayout.SOUTH);
-        this.pack();
 
-        this.setSize(600, 600);
-        this.setLocationRelativeTo(null);
-
-        this.setVisible(true);
-
-        herlaad();
-        toonComputerOpties();
+        return menuBar;
 
     }
 
+    /*
+     * Toont een scherm met keuzes voor computertegenstanders
+     */
     private void toonComputerOpties() {
         Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic"};
 
@@ -103,81 +113,78 @@ public class OthelloFrame extends JFrame {
     }
 
 
-    private void herlaad() {
+    /*
+     * Tekent alles opnieuw waneer er een wijziging gebeurt in het model
+     */
+    public void herlaad() {
+        othelloBord.herlaad();
 
-        for (OthelloButton button : othelloButtonList) {
-            Kleur kleur = spel.getBord().getKleurOpPositie(button.getRij(), button.getKolom());
-            button.setKleur(kleur);
-            button.setText("");
-            if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
-
-                button.setText("X");
-
-
+        if (!spel.isSpelGedaan()) {
+            if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
+                spelerLabel.setText("Witte speler aan de beurt");
+            } else {
+                spelerLabel.setText("Zwarte speler aan de beurt");
             }
-
-        }
-
-        if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
-            spelerLabel.setText("Witte speler aan de beurt");
         } else {
-            spelerLabel.setText("Zwarte speler aan de beurt");
-        }
-        this.revalidate();
-        this.repaint();
-
-
-        if (spel.isSpelGedaan()) {
             if (spel.getWinnaar() == Kleur.WIT) {
-                JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
+                spelerLabel.setText("De witte speler heeft gewonnen");
             } else if (spel.getWinnaar() == Kleur.ZWART) {
-                JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
+                spelerLabel.setText("De zwarte speler heeft gewonnen");
 
             } else {
-                JOptionPane.showMessageDialog(null, "Gelijkstand!");
+                spelerLabel.setText("Gelijkstand!");
 
             }
         }
+
+        this.revalidate();
+        this.repaint();
+        if (spel.isSpelGedaan()) {
+            toonWinVenster();
+        } else if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
+            startComputerWorker();
+        }
+
+
     }
 
-    class OthelloButtonListener implements MouseListener {
-
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            OthelloButton othelloButton = (OthelloButton) e.getSource();
-            try {
-                spel.zetPion(othelloButton.getRij(), othelloButton.getKolom());
-                herlaad();
-                if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
-                    spel.doeComputerZet();
+    /*
+     * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
+     */
+    private void startComputerWorker() {
+        ComputerWorker computerWorker = new ComputerWorker(spel);
+        computerWorker.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("state".equals(evt.getPropertyName())
+                        && (SwingWorker.StateValue.DONE.equals(evt.getNewValue()))) {
+                    System.out.println("updating!");
                     herlaad();
                 }
-            } catch (OngeldigeZet ongeldigeZet) {
-                System.err.println("Ongeldige zet");
+
             }
-        }
+        });
+        computerWorker.execute();
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
     }
+
+    /*
+     * Toont een venster bij het einde van het spel
+     */
+    private void toonWinVenster() {
+
+        if (spel.getWinnaar() == Kleur.WIT) {
+            JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
+        } else if (spel.getWinnaar() == Kleur.ZWART) {
+            JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Gelijkstand!");
+
+        }
+
+    }
+
 
     public static void main(String[] args) {
         OthelloFrame frame = new OthelloFrame();

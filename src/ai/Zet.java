@@ -7,7 +7,7 @@ package ai;
 public class Zet {
     private int rij;
     private int kolom;
-    private double heuristicValue;
+    private double Waarde;
 
     public Zet(int rij, int kolom) {
         this.rij = rij;
@@ -31,11 +31,11 @@ public class Zet {
         return kolom;
     }
 
-    public double getHeuristicValue() {
-        return heuristicValue;
+    public double getWaarde() {
+        return Waarde;
     }
 
-    public void setHeuristicValue(double heuristicValue) {
-        this.heuristicValue = heuristicValue;
+    public void setWaarde(double waarde) {
+        this.Waarde = waarde;
     }
 }

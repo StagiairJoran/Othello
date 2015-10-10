@@ -23,7 +23,7 @@ public class MiniMaxComputer implements Computer{
 
     public MiniMaxComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 4;
+        this.aantalStappen = 6;
         this.computerKleur = kleur;
 
     }
@@ -44,10 +44,10 @@ public class MiniMaxComputer implements Computer{
                 ongeldigeZet.printStackTrace();
             }
 
-            zet.setHeuristicValue(miniMax(duplicaat, Kleur.andereKleur(computerKleur)));
-            if (zet.getHeuristicValue() > besteWaarde || besteZet == null) {
+            zet.setWaarde(miniMax(duplicaat, Kleur.andereKleur(computerKleur)));
+            if (zet.getWaarde() > besteWaarde || besteZet == null) {
                 besteZet = zet;
-                besteWaarde = zet.getHeuristicValue();
+                besteWaarde = zet.getWaarde();
             }
 
 
@@ -61,9 +61,11 @@ public class MiniMaxComputer implements Computer{
     private double miniMax(Bord bord, Kleur kleur) {
         double besteWaarde;
         if (bord.getNodeDiepte() == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
+            //stopconditie
             besteWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
 
         } else if (kleur == computerKleur) {
+            // Max
             besteWaarde = Double.NEGATIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
@@ -72,6 +74,7 @@ public class MiniMaxComputer implements Computer{
                 besteWaarde = Math.max(besteWaarde, childWaarde);
             }
         } else {
+            // Min
             besteWaarde = Double.POSITIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
