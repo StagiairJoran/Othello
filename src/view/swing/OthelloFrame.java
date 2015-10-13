@@ -1,5 +1,6 @@
 package view.swing;
 
+import ai.computer.api.Computer;
 import ai.computer.impl.HeuristicComputer;
 import ai.computer.impl.MiniMaxAlphaBetaComputer;
 import ai.computer.impl.MiniMaxComputer;
@@ -22,6 +23,8 @@ public class OthelloFrame extends JFrame {
     Spel spel;
     JLabel spelerLabel;
     OthelloBord othelloBord;
+    ComputerProgressBar computerProgressBar = new ComputerProgressBar();
+    Computer computer;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
@@ -37,9 +40,13 @@ public class OthelloFrame extends JFrame {
         informationPanel.add(spelerLabel);
         this.add(maakMenu(), BorderLayout.NORTH);
         this.add(othelloBord, BorderLayout.CENTER);
-        this.add(informationPanel, BorderLayout.SOUTH);
-        this.pack();
 
+        JPanel paneel = new JPanel();
+        paneel.add(computerProgressBar, BorderLayout.NORTH);
+        paneel.add(informationPanel, BorderLayout.SOUTH);
+        this.add(paneel, BorderLayout.SOUTH);
+
+        this.pack();
         this.setSize(600, 600);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -98,12 +105,17 @@ public class OthelloFrame extends JFrame {
         switch (keuze) {
             case 0:
                 spel.setComputer(new MiniMaxAlphaBetaComputer(Kleur.ZWART));
+                this.computer = new MiniMaxAlphaBetaComputer(Kleur.ZWART);
                 break;
             case 1:
                 spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
+                this.computer = new MiniMaxComputer(Kleur.ZWART);
+
                 break;
             default:
                 spel.setComputer(new HeuristicComputer(Kleur.ZWART));
+                this.computer = new HeuristicComputer(Kleur.ZWART);
+
                 break;
         }
     }
@@ -149,7 +161,7 @@ public class OthelloFrame extends JFrame {
      * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
      */
     private void startComputerWorker() {
-        ComputerWorker computerWorker = new ComputerWorker(spel);
+        ComputerWorker computerWorker = new ComputerWorker(spel, computerProgressBar, computer);
         computerWorker.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {

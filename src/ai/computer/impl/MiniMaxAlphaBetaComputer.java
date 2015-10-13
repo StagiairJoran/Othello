@@ -1,6 +1,7 @@
 package ai.computer.impl;
 
 import ai.Zet;
+import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
 import ai.heuristic.api.HeuristicCalculator;
 import ai.heuristic.impl.CompleteHeuristicCalculator;
@@ -9,13 +10,14 @@ import model.Kleur;
 import model.OngeldigeZet;
 
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by jorandeboever
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe met alpha-beta pruning
  */
-public class MiniMaxAlphaBetaComputer implements Computer{
+public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
     private HeuristicCalculator heuristicCalculator;
     private Kleur computerKleur;
     private int aantalStappen;
@@ -23,7 +25,7 @@ public class MiniMaxAlphaBetaComputer implements Computer{
 
     public MiniMaxAlphaBetaComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 4;
+        this.aantalStappen = 7;
         this.computerKleur = kleur;
 
     }
@@ -32,10 +34,11 @@ public class MiniMaxAlphaBetaComputer implements Computer{
     public Zet berekenZet(Bord bord) {
         //Haal mogelijke zetten op
         List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
-
+       this.setDuur(zetten.size());
         //kies beste zet
         Zet besteZet = null;
         double besteWaarde = Double.NEGATIVE_INFINITY;
+        int i = 0;
         for (Zet zet : zetten) {
             Bord duplicaat = new Bord(bord);
             try {
@@ -49,7 +52,9 @@ public class MiniMaxAlphaBetaComputer implements Computer{
                 besteZet = zet;
                 besteWaarde = zet.getWaarde();
             }
-
+            this.setProgress(++i);
+            setChanged();
+            notifyObservers();
         }
         return besteZet;
     }
@@ -69,7 +74,7 @@ public class MiniMaxAlphaBetaComputer implements Computer{
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, besteWaarde, beta, Kleur.andereKleur(kleur));
                 besteWaarde = Math.max(besteWaarde, childWaarde);
-                if(beta <= besteWaarde) break;
+                if (beta <= besteWaarde) break;
             }
         } else {
             besteWaarde = Double.POSITIVE_INFINITY;
@@ -78,7 +83,7 @@ public class MiniMaxAlphaBetaComputer implements Computer{
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur));
                 besteWaarde = Math.min(besteWaarde, childWaarde);
-                if(besteWaarde <= alpha) break;
+                if (besteWaarde <= alpha) break;
 
             }
         }
@@ -90,4 +95,5 @@ public class MiniMaxAlphaBetaComputer implements Computer{
     public void setAantalStappen(int aantalStappen) {
         this.aantalStappen = aantalStappen;
     }
+
 }

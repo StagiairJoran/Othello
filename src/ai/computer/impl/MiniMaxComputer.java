@@ -1,6 +1,7 @@
 package ai.computer.impl;
 
 import ai.Zet;
+import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
 import ai.heuristic.api.HeuristicCalculator;
 import ai.heuristic.impl.CompleteHeuristicCalculator;
@@ -9,13 +10,14 @@ import model.Kleur;
 import model.OngeldigeZet;
 
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by jorandeboever
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe
  */
-public class MiniMaxComputer implements Computer{
+public class MiniMaxComputer extends ObservableAI implements Computer{
     private HeuristicCalculator heuristicCalculator;
     private Kleur computerKleur;
     private int aantalStappen;
@@ -23,7 +25,7 @@ public class MiniMaxComputer implements Computer{
 
     public MiniMaxComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 6;
+        this.aantalStappen = 7;
         this.computerKleur = kleur;
 
     }
@@ -32,8 +34,9 @@ public class MiniMaxComputer implements Computer{
     public Zet berekenZet(Bord bord) {
         //Haal mogelijke zetten op
         List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
-
+        this.setDuur(zetten.size());
         //kies beste zet
+        int i = 0;
         Zet besteZet = null;
         double besteWaarde = Double.NEGATIVE_INFINITY;
         for (Zet zet : zetten) {
@@ -49,11 +52,14 @@ public class MiniMaxComputer implements Computer{
                 besteZet = zet;
                 besteWaarde = zet.getWaarde();
             }
-
+            this.setProgress(++i);
+            setChanged();
+            notifyObservers();
 
         }
         return besteZet;
     }
+
 
     /*
      * Minimax-algoritme
