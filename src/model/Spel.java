@@ -87,7 +87,6 @@ public class Spel {
 
     public void setComputer(Computer computer) {
         this.computer = computer;
-        System.out.println(computer);
     }
 
     public Bord getBord() {

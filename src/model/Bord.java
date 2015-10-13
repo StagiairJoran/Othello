@@ -3,7 +3,6 @@ package model;
 import ai.Zet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -103,6 +102,10 @@ public class Bord {
 
         speelvak.setKleur(kleur);
         wijzigGeflankteSpelvakken(rij, kolom, kleur);
+    }
+
+    public void zetPion(Zet zet, Kleur kleur){
+        zetPion(zet.getRij(), zet.getKolom(), kleur);
     }
 
     private void wijzigSpelVakkenInRichting(int rij, int kolom, Richting richting, Kleur kleurDieMoetGewijzigdWorden) {
@@ -231,4 +234,5 @@ public class Bord {
         hetBord += "\nKolom    A     B     C     D     E     F     G     H   ";
         return hetBord;
     }
+
 }

@@ -55,7 +55,6 @@ public class SimpleHeuristicCalculator implements HeuristicCalculator {
             aantalMin++;
         }
 
-
         if (aantalMax + aantalMin != 0) {
             return 100 * (aantalMax - aantalMin) / (aantalMax + aantalMin);
         }

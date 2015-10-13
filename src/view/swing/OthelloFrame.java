@@ -3,6 +3,7 @@ package view.swing;
 import ai.computer.impl.HeuristicComputer;
 import ai.computer.impl.MiniMaxAlphaBetaComputer;
 import ai.computer.impl.MiniMaxComputer;
+import ai.computer.impl.NewMiniMaxComputer;
 import model.Kleur;
 import model.Spel;
 
@@ -47,7 +48,6 @@ public class OthelloFrame extends JFrame {
 
         herlaad();
         toonComputerOpties();
-
     }
 
     /*
@@ -86,7 +86,7 @@ public class OthelloFrame extends JFrame {
      * Toont een scherm met keuzes voor computertegenstanders
      */
     private void toonComputerOpties() {
-        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic"};
+        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "MiniMax (Chim)"};
 
         int keuze = JOptionPane.showOptionDialog(this,
                 "Tegen welke computer wil je spelen?",
@@ -102,9 +102,13 @@ public class OthelloFrame extends JFrame {
             case 1:
                 spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
                 break;
-            default:
+            case 2:
                 spel.setComputer(new HeuristicComputer(Kleur.ZWART));
                 break;
+            case 3:
+                spel.setComputer(new NewMiniMaxComputer());
+                break;
+
         }
     }
 

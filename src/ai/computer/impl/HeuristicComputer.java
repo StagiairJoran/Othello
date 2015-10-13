@@ -19,7 +19,6 @@ public class HeuristicComputer implements Computer {
     private HeuristicCalculator heuristicCalculator;
     private Kleur computerKleur;
 
-
     public HeuristicComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
 
