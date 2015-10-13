@@ -4,18 +4,14 @@ import ai.computer.impl.HeuristicComputer;
 import ai.computer.impl.MiniMaxAlphaBetaComputer;
 import ai.computer.impl.MiniMaxComputer;
 import model.Kleur;
-import model.OngeldigeZet;
 import model.Spel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 
 /**
  * Created by jorandeboever
@@ -126,7 +122,7 @@ public class OthelloFrame extends JFrame {
                 spelerLabel.setText("Zwarte speler aan de beurt");
             }
         } else {
-            if (spel.getWinnaar() == Kleur.WIT) {
+            /*if (spel.getWinnaar() == Kleur.WIT) {
                 spelerLabel.setText("De witte speler heeft gewonnen");
             } else if (spel.getWinnaar() == Kleur.ZWART) {
                 spelerLabel.setText("De zwarte speler heeft gewonnen");
@@ -134,7 +130,8 @@ public class OthelloFrame extends JFrame {
             } else {
                 spelerLabel.setText("Gelijkstand!");
 
-            }
+            }*/
+            spelerLabel.setText(spel.getWinnaarTekst());
         }
 
         this.revalidate();
@@ -173,7 +170,7 @@ public class OthelloFrame extends JFrame {
      */
     private void toonWinVenster() {
 
-        if (spel.getWinnaar() == Kleur.WIT) {
+        /*if (spel.getWinnaar() == Kleur.WIT) {
             JOptionPane.showMessageDialog(null, "De witte speler heeft gewonnen");
         } else if (spel.getWinnaar() == Kleur.ZWART) {
             JOptionPane.showMessageDialog(null, "De zwarte speler heeft gewonnen");
@@ -181,7 +178,8 @@ public class OthelloFrame extends JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Gelijkstand!");
 
-        }
+        }*/
+        JOptionPane.showMessageDialog(null, spel.getWinnaarTekst());
 
     }
 

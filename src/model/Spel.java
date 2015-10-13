@@ -31,6 +31,22 @@ public class Spel {
         }
     }
 
+    public String getWinnaarTekst(){
+        String winnaar = "";
+        winnaar += "Wit heeft " + bord.getScore(Kleur.WIT) + " vakjes, ";
+        winnaar += "Zwart heeft " + bord.getScore(Kleur.ZWART) + " vakjes. ";
+
+        if(bord.getScore(Kleur.WIT) > bord.getScore(Kleur.ZWART)){
+            winnaar += "\nDe winnaar is wit.";
+        }else if(bord.getScore(Kleur.WIT)< bord.getScore(Kleur.ZWART)){
+            winnaar += "\nDe winnaar is zwart.";
+        }else {
+            winnaar += "\nEr is geen winnaar.";
+        }
+
+        return winnaar;
+    }
+
     public Kleur getKleurAanDeBeurt() {
         return kleurAanDeBeurt;
     }

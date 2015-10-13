@@ -23,7 +23,7 @@ public class MiniMaxAlphaBetaComputer implements Computer{
 
     public MiniMaxAlphaBetaComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 6;
+        this.aantalStappen = 4;
         this.computerKleur = kleur;
 
     }
