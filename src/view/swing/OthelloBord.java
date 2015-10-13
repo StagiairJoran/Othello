@@ -51,12 +51,10 @@ public class OthelloBord extends JPanel {
             button.setKleur(kleur);
             button.setText("");
             if (spel.getBord().isGeldigeZet(button.getRij(), button.getKolom(), spel.getKleurAanDeBeurt())) {
-                if(spel.getKleurAanDeBeurt() == Kleur.ZWART){
-                    button.setForeground(Color.RED);
-                }else {
-                    button.setForeground(Color.BLUE);
+                if (spel.getKleurAanDeBeurt() == Kleur.WIT) {
+                    button.setText("X");
                 }
-                button.setText("X");
+
 
             }
 
