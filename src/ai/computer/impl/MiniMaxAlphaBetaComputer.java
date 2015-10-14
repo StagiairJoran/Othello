@@ -22,6 +22,8 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
     private HeuristicCalculator heuristicCalculator;
     private Kleur computerKleur;
     private int aantalStappen;
+    private Zet ultiemeZet;
+
 
 
     public MiniMaxAlphaBetaComputer(Kleur kleur) {
@@ -33,7 +35,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
 
 
     public Zet berekenZet(Bord bord) {
-        //Haal mogelijke zetten op
+       /* //Haal mogelijke zetten op
         List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
        this.setDuur(zetten.size());
         //kies beste zet
@@ -57,7 +59,12 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
             setChanged();
             notifyObservers();
         }
-        return besteZet;
+        return besteZet;*/
+
+        ultiemeZet = new Zet(100, 100);
+        ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
+        alphaBeta(bord, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, computerKleur, aantalStappen);
+        return ultiemeZet;
     }
 
 
@@ -71,11 +78,24 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
 
         } else if (kleur == computerKleur) {
             besteWaarde = alpha;
-            for (Zet zet : bord.geefGeldigeZetten(kleur)) {
+            List<Zet> zetten = bord.geefGeldigeZetten(kleur);
+            int i = 0;
+
+            for (Zet zet : zetten) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, besteWaarde, beta, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.max(besteWaarde, childWaarde);
+                if (aantalStappen == this.aantalStappen ) {
+                    if (ultiemeZet.getWaarde() < besteWaarde) {
+                        ultiemeZet = zet;
+                        System.out.println("ultieme zet gewijzigd");
+                    }
+                    this.setProgress(++i);
+                    this.setDuur(zetten.size());
+                    setChanged();
+                    notifyObservers();
+                }
                 if (beta <= besteWaarde) break;
             }
         } else {

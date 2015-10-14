@@ -17,10 +17,11 @@ import java.util.Observable;
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe
  */
-public class MiniMaxComputer extends ObservableAI implements Computer{
+public class MiniMaxComputer extends ObservableAI implements Computer {
     private HeuristicCalculator heuristicCalculator;
     private Kleur computerKleur;
     private int aantalStappen;
+    private Zet ultiemeZet;
 
 
     public MiniMaxComputer(Kleur kleur) {
@@ -32,7 +33,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
 
 
     public Zet berekenZet(Bord bord) {
-        //Haal mogelijke zetten op
+    /*    //Haal mogelijke zetten op
         List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
         this.setDuur(zetten.size());
         //kies beste zet
@@ -41,11 +42,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
         double besteWaarde = Double.NEGATIVE_INFINITY;
         for (Zet zet : zetten) {
             Bord duplicaat = new Bord(bord);
-            try {
-                duplicaat.zetPion(zet.getRij(), zet.getKolom(), computerKleur);
-            } catch (OngeldigeZet ongeldigeZet) {
-                ongeldigeZet.printStackTrace();
-            }
+            duplicaat.zetPion(zet.getRij(), zet.getKolom(), computerKleur);
 
             zet.setWaarde(miniMax(duplicaat, Kleur.andereKleur(computerKleur), aantalStappen - 1));
             if (zet.getWaarde() > besteWaarde || besteZet == null) {
@@ -57,7 +54,11 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
             notifyObservers();
 
         }
-        return besteZet;
+        return besteZet;*/
+        ultiemeZet = new Zet(100, 100);
+        ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
+        miniMax(bord, computerKleur, aantalStappen);
+        return ultiemeZet;
     }
 
 
@@ -72,12 +73,27 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
 
         } else if (kleur == computerKleur) {
             // Max
+            List<Zet> zetten = bord.geefGeldigeZetten(kleur);
+            int i = 0;
+
             besteWaarde = Double.NEGATIVE_INFINITY;
-            for (Zet zet : bord.geefGeldigeZetten(kleur)) {
+            for (Zet zet : zetten) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.max(besteWaarde, childWaarde);
+
+                if (aantalStappen == this.aantalStappen ) {
+                    if (ultiemeZet.getWaarde() < besteWaarde) {
+                        ultiemeZet = zet;
+                        System.out.println("ultieme zet gewijzigd");
+                    }
+                    this.setProgress(++i);
+                    this.setDuur(zetten.size());
+                    setChanged();
+                    notifyObservers();
+                }
+
             }
         } else {
             // Min
@@ -93,7 +109,6 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
 
         return besteWaarde;
     }
-
 
 
     public void setAantalStappen(int aantalStappen) {
