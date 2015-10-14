@@ -25,4 +25,15 @@ public abstract class ObservableAI extends Observable {
     public void setDuur(int duur) {
         this.duur = duur;
     }
+
+    /*
+   * Brengt de observers op de hoogte hoe ver het algoritme gevorderd is
+   */
+    protected int update(int progress, int duur) {
+        this.setProgress(progress);
+        this.setDuur(duur);
+        setChanged();
+        notifyObservers();
+        return progress;
+    }
 }

@@ -86,12 +86,8 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
                 if (aantalStappen == this.aantalStappen ) {
                     if (ultiemeZet.getWaarde() < besteWaarde) {
                         ultiemeZet = zet;
-                        System.out.println("ultieme zet gewijzigd");
                     }
-                    this.setProgress(++i);
-                    this.setDuur(zetten.size());
-                    setChanged();
-                    notifyObservers();
+                    update(++i, zetten.size());
                 }
 
             }
@@ -109,7 +105,6 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
 
         return besteWaarde;
     }
-
 
     public void setAantalStappen(int aantalStappen) {
         this.aantalStappen = aantalStappen;

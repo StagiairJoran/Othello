@@ -74,9 +74,11 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
     private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleur, int aantalStappen) {
         double besteWaarde;
         if (0 == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
+            //stopconditie
             besteWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
 
         } else if (kleur == computerKleur) {
+            //max
             besteWaarde = alpha;
             List<Zet> zetten = bord.geefGeldigeZetten(kleur);
             int i = 0;
@@ -89,16 +91,13 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
                 if (aantalStappen == this.aantalStappen ) {
                     if (ultiemeZet.getWaarde() < besteWaarde) {
                         ultiemeZet = zet;
-                        System.out.println("ultieme zet gewijzigd");
                     }
-                    this.setProgress(++i);
-                    this.setDuur(zetten.size());
-                    setChanged();
-                    notifyObservers();
+                    update(++i, zetten.size());
                 }
                 if (beta <= besteWaarde) break;
             }
         } else {
+            //min
             besteWaarde = Double.POSITIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
@@ -113,6 +112,9 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
 
         return besteWaarde;
     }
+
+
+
 
     public void setAantalStappen(int aantalStappen) {
         this.aantalStappen = aantalStappen;
