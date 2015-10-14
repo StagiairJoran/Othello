@@ -66,14 +66,17 @@ public class OthelloBord extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            OthelloButton othelloButton = (OthelloButton) e.getSource();
-            try {
-                spel.zetPion(othelloButton.getRij(), othelloButton.getKolom());
-                frame.herlaad();
+            if (spel.getKleurAanDeBeurt() == Kleur.WIT){
+                OthelloButton othelloButton = (OthelloButton) e.getSource();
+                try {
+                    spel.zetPion(othelloButton.getRij(), othelloButton.getKolom());
+                    frame.herlaad();
 
-            } catch (OngeldigeZet ongeldigeZet) {
-                System.err.println("Ongeldige zet");
+                } catch (OngeldigeZet ongeldigeZet) {
+                    System.err.println("Ongeldige zet");
+                }
             }
+
         }
 
         @Override

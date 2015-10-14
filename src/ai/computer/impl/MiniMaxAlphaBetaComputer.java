@@ -47,7 +47,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
                 ongeldigeZet.printStackTrace();
             }
 
-            zet.setWaarde(alphaBeta(duplicaat, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Kleur.andereKleur(computerKleur)));
+            zet.setWaarde(alphaBeta(duplicaat, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Kleur.andereKleur(computerKleur), aantalStappen - 1));
             if (zet.getWaarde() > besteWaarde || besteZet == null) {
                 besteZet = zet;
                 besteWaarde = zet.getWaarde();
@@ -62,9 +62,9 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
     /*
      * Minimax-algoritme met alpha-beta pruning
      */
-    private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleur) {
+    private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleur, int aantalStappen) {
         double besteWaarde;
-        if (bord.getNodeDiepte() == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
+        if (0 == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
             besteWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
 
         } else if (kleur == computerKleur) {
@@ -72,7 +72,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
-                double childWaarde = alphaBeta(duplicaat, besteWaarde, beta, Kleur.andereKleur(kleur));
+                double childWaarde = alphaBeta(duplicaat, besteWaarde, beta, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.max(besteWaarde, childWaarde);
                 if (beta <= besteWaarde) break;
             }
@@ -81,7 +81,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
-                double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur));
+                double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
                 if (besteWaarde <= alpha) break;
 

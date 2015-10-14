@@ -47,7 +47,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
                 ongeldigeZet.printStackTrace();
             }
 
-            zet.setWaarde(miniMax(duplicaat, Kleur.andereKleur(computerKleur)));
+            zet.setWaarde(miniMax(duplicaat, Kleur.andereKleur(computerKleur), aantalStappen - 1));
             if (zet.getWaarde() > besteWaarde || besteZet == null) {
                 besteZet = zet;
                 besteWaarde = zet.getWaarde();
@@ -64,9 +64,9 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
     /*
      * Minimax-algoritme
      */
-    private double miniMax(Bord bord, Kleur kleur) {
+    private double miniMax(Bord bord, Kleur kleur, int aantalStappen) {
         double besteWaarde;
-        if (bord.getNodeDiepte() == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
+        if (0 == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
             //stopconditie
             besteWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
 
@@ -76,7 +76,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
-                double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur));
+                double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.max(besteWaarde, childWaarde);
             }
         } else {
@@ -85,7 +85,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
-                double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur));
+                double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
             }
         }
@@ -93,6 +93,8 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
 
         return besteWaarde;
     }
+
+
 
     public void setAantalStappen(int aantalStappen) {
         this.aantalStappen = aantalStappen;
