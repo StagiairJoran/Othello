@@ -36,6 +36,7 @@ public class OthelloFrame extends JFrame {
         this.comboBox = maakComboBox();
         this.comboLabel = new JLabel("Aantal stappen:");
         init();
+
     }
 
 
@@ -226,6 +227,13 @@ public class OthelloFrame extends JFrame {
 
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+
+        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
+            System.err.println("Stijl niet gelukt");
+        }
         OthelloFrame frame = new OthelloFrame();
     }
 }

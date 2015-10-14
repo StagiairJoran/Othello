@@ -5,6 +5,7 @@ import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
 import ai.heuristic.api.HeuristicCalculator;
 import ai.heuristic.impl.CompleteHeuristicCalculator;
+import ai.heuristic.impl.SimpleHeuristicCalculator;
 import model.Bord;
 import model.Kleur;
 import model.OngeldigeZet;
