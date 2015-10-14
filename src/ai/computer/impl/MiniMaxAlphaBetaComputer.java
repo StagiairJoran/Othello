@@ -91,9 +91,18 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
                 if (aantalStappen == this.aantalStappen ) {
                     if (ultiemeZet.getWaarde() < besteWaarde) {
                         ultiemeZet = zet;
+                        ultiemeZet.setWaarde(childWaarde);
                     }
                     update(++i, zetten.size());
                 }
+                if (besteWaarde == childWaarde) {
+                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
+                }
+                else {
+                    duplicaat.setUserObject("  " + Math.round(childWaarde) + zet);
+
+                }
+                bord.add(duplicaat);
                 if (beta <= besteWaarde) break;
             }
         } else {
@@ -104,6 +113,14 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
+                if (besteWaarde == childWaarde) {
+                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
+                }
+                else {
+                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
+
+                }
+                bord.add(duplicaat);
                 if (besteWaarde <= alpha) break;
 
             }

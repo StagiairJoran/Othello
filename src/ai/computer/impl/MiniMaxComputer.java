@@ -84,12 +84,20 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
                 besteWaarde = Math.max(besteWaarde, childWaarde);
 
                 if (aantalStappen == this.aantalStappen ) {
-                    if (ultiemeZet.getWaarde() < besteWaarde) {
+                    if (ultiemeZet.getWaarde() < childWaarde) {
                         ultiemeZet = zet;
+                        ultiemeZet.setWaarde(childWaarde);
                     }
                     update(++i, zetten.size());
                 }
+                if (besteWaarde == childWaarde) {
+                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
+                }
+                else {
+                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
 
+                }
+                bord.add(duplicaat);
             }
         } else {
             // Min
@@ -99,6 +107,17 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
+
+
+                if (besteWaarde == childWaarde) {
+                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
+                }
+                else {
+                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
+
+                }
+
+                bord.add(duplicaat);
             }
         }
 

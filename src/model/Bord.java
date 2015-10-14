@@ -2,6 +2,7 @@ package model;
 
 import ai.Zet;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +11,12 @@ import java.util.List;
  * Created by jorandeboever
  * on 27/09/15.
  */
-public class Bord {
+public class Bord extends DefaultMutableTreeNode{
     private int grootteBord = 8;
     protected Speelvak[][] speelvakken ;
 
 
-    public Bord() {
+    public Bord()  {
         speelvakken = new Speelvak[grootteBord][grootteBord];
 
         for (int i = 0; i < grootteBord; i++) {

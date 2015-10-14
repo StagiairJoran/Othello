@@ -38,4 +38,9 @@ public class Zet {
     public void setWaarde(double waarde) {
         this.Waarde = waarde;
     }
+
+    @Override
+    public String toString() {
+        return "Rij: " + getRij() + 1 + ", Kolom: " + getKolom() + 1;
+    }
 }
