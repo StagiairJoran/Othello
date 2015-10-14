@@ -59,6 +59,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
         return besteZet;
     }
 
+
     /*
      * Minimax-algoritme met alpha-beta pruning
      */
@@ -96,4 +97,7 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
         this.aantalStappen = aantalStappen;
     }
 
+    public int getAantalStappen() {
+        return aantalStappen;
+    }
 }

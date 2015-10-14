@@ -12,6 +12,10 @@ import java.util.Observable;
 public interface Computer {
     Zet berekenZet(Bord bord);
 
+    void setAantalStappen(int aantalStappen);
+    int getAantalStappen();
+
+    //ObservableAI methodes
     int getDuur();
     int getProgress();
 }

@@ -99,4 +99,8 @@ public class MiniMaxComputer extends ObservableAI implements Computer{
     public void setAantalStappen(int aantalStappen) {
         this.aantalStappen = aantalStappen;
     }
+
+    public int getAantalStappen() {
+        return aantalStappen;
+    }
 }

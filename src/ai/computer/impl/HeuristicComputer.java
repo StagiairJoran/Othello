@@ -60,5 +60,15 @@ public class HeuristicComputer extends ObservableAI implements Computer {
         return besteZet;
     }
 
+    @Override
+    public void setAantalStappen(int aantalStappen) {
+        System.err.println("Heuristic computer heeft geen aantal stappen");
+    }
+
+    public int getAantalStappen() {
+        return 0;
+    }
+
+
 
 }

@@ -6,7 +6,7 @@ import java.util.Observable;
  * Created by Joachim De Schryver & Joran De Boever
  * on 13/10/15.
  */
-public class ObservableAI extends Observable {
+public abstract class ObservableAI extends Observable {
     private int progress = 0;
     private int duur;
 

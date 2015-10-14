@@ -25,13 +25,18 @@ public class OthelloFrame extends JFrame {
     OthelloBord othelloBord;
     ComputerProgressBar computerProgressBar = new ComputerProgressBar();
     Computer computer;
+    JComboBox comboBox;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
         this.spelerLabel = new JLabel("Witte speler aan de beurt");
         othelloBord = new OthelloBord(spel, this);
+        computer = new MiniMaxComputer(Kleur.ZWART);
+        this.comboBox = maakComboBox();
         init();
     }
+
+
 
     private void init() {
         this.setTitle("Othello");
@@ -44,6 +49,8 @@ public class OthelloFrame extends JFrame {
         JPanel paneel = new JPanel();
         paneel.add(computerProgressBar, BorderLayout.NORTH);
         paneel.add(informationPanel, BorderLayout.SOUTH);
+        paneel.add(new JLabel("Aantal stappen:"), BorderLayout.SOUTH);
+        paneel.add(comboBox, BorderLayout.SOUTH);
         this.add(paneel, BorderLayout.SOUTH);
 
         this.pack();
@@ -55,6 +62,19 @@ public class OthelloFrame extends JFrame {
         herlaad();
         toonComputerOpties();
 
+    }
+
+    private JComboBox maakComboBox(){
+        Integer[] getallen = {1,2,3,4,5,6,7,8,9,10};
+        JComboBox comboBox = new JComboBox(getallen);
+        comboBox.setSelectedItem(computer.getAantalStappen());
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                computer.setAantalStappen((Integer) comboBox.getSelectedItem());
+            }
+        });
+        return comboBox;
     }
 
     /*
@@ -95,6 +115,8 @@ public class OthelloFrame extends JFrame {
     private void toonComputerOpties() {
         Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic"};
 
+        int aantalStappen = computer.getAantalStappen();
+
         int keuze = JOptionPane.showOptionDialog(this,
                 "Tegen welke computer wil je spelen?",
                 "Computerkeuze",
@@ -118,6 +140,7 @@ public class OthelloFrame extends JFrame {
 
                 break;
         }
+        computer.setAantalStappen(aantalStappen);
     }
 
 
@@ -134,15 +157,6 @@ public class OthelloFrame extends JFrame {
                 spelerLabel.setText("Zwarte speler aan de beurt");
             }
         } else {
-            /*if (spel.getWinnaar() == Kleur.WIT) {
-                spelerLabel.setText("De witte speler heeft gewonnen");
-            } else if (spel.getWinnaar() == Kleur.ZWART) {
-                spelerLabel.setText("De zwarte speler heeft gewonnen");
-
-            } else {
-                spelerLabel.setText("Gelijkstand!");
-
-            }*/
             spelerLabel.setText(spel.getWinnaarTekst());
         }
 
@@ -161,6 +175,8 @@ public class OthelloFrame extends JFrame {
      * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
      */
     private void startComputerWorker() {
+        comboBox.setEnabled(false);
+
         ComputerWorker computerWorker = new ComputerWorker(spel, computerProgressBar, computer);
         computerWorker.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
@@ -168,6 +184,8 @@ public class OthelloFrame extends JFrame {
                 if ("state".equals(evt.getPropertyName())
                         && (SwingWorker.StateValue.DONE.equals(evt.getNewValue()))) {
                     System.out.println("updating!");
+                    comboBox.setEnabled(true);
+
                     herlaad();
                 }
 
