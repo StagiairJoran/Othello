@@ -26,6 +26,7 @@ public class OthelloFrame extends JFrame {
     ComputerProgressBar computerProgressBar = new ComputerProgressBar();
     Computer computer;
     JComboBox comboBox;
+    JLabel comboLabel;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
@@ -33,6 +34,7 @@ public class OthelloFrame extends JFrame {
         othelloBord = new OthelloBord(spel, this);
         computer = new MiniMaxComputer(Kleur.ZWART);
         this.comboBox = maakComboBox();
+        this.comboLabel = new JLabel("Aantal stappen:");
         init();
     }
 
@@ -49,7 +51,7 @@ public class OthelloFrame extends JFrame {
         JPanel paneel = new JPanel();
         paneel.add(computerProgressBar, BorderLayout.NORTH);
         paneel.add(informationPanel, BorderLayout.SOUTH);
-        paneel.add(new JLabel("Aantal stappen:"), BorderLayout.SOUTH);
+        paneel.add(comboLabel, BorderLayout.SOUTH);
         paneel.add(comboBox, BorderLayout.SOUTH);
         this.add(paneel, BorderLayout.SOUTH);
 
@@ -109,12 +111,16 @@ public class OthelloFrame extends JFrame {
 
     }
 
+
+
     /*
      * Toont een scherm met keuzes voor computertegenstanders
      */
     private void toonComputerOpties() {
         Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic"};
 
+        comboBox.setVisible(true);
+        comboLabel.setVisible(true);
         int aantalStappen = computer.getAantalStappen();
 
         int keuze = JOptionPane.showOptionDialog(this,
@@ -128,15 +134,20 @@ public class OthelloFrame extends JFrame {
             case 0:
                 spel.setComputer(new MiniMaxAlphaBetaComputer(Kleur.ZWART));
                 this.computer = new MiniMaxAlphaBetaComputer(Kleur.ZWART);
+                this.setTitle("Othello MiniMax Alpha Beta");
                 break;
             case 1:
                 spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
                 this.computer = new MiniMaxComputer(Kleur.ZWART);
+                this.setTitle("Othello MiniMax");
 
                 break;
             default:
+                comboBox.setVisible(false);
+                comboLabel.setVisible(false);
                 spel.setComputer(new HeuristicComputer(Kleur.ZWART));
                 this.computer = new HeuristicComputer(Kleur.ZWART);
+                this.setTitle("Othello MiniMax Heuristic");
 
                 break;
         }
