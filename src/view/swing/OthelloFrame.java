@@ -23,22 +23,22 @@ public class OthelloFrame extends JFrame {
     Spel spel;
     JLabel spelerLabel;
     OthelloBord othelloBord;
-    ComputerProgressBar computerProgressBar = new ComputerProgressBar();
-    Computer computer;
+    JProgressBar computerProgressBar = new JProgressBar();
     JComboBox comboBox;
     JLabel comboLabel;
+    ComputerWorker computerWorker;
+    TreeFrame treeFrame;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
         this.spelerLabel = new JLabel("Witte speler aan de beurt");
         othelloBord = new OthelloBord(spel, this);
-        computer = new MiniMaxComputer(Kleur.ZWART);
         this.comboBox = maakComboBox();
         this.comboLabel = new JLabel("Aantal stappen:");
+        computerWorker = createComputerWorker();
         init();
 
     }
-
 
 
     private void init() {
@@ -61,20 +61,19 @@ public class OthelloFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-
         herlaad();
         toonComputerOpties();
 
     }
 
-    private JComboBox maakComboBox(){
-        Integer[] getallen = {1,2,3,4,5,6,7,8,9,10};
+    private JComboBox maakComboBox() {
+        Integer[] getallen = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         JComboBox comboBox = new JComboBox(getallen);
-        comboBox.setSelectedItem(computer.getAantalStappen());
+        comboBox.setSelectedItem(spel.getComputer().getAantalStappen());
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                computer.setAantalStappen((Integer) comboBox.getSelectedItem());
+                spel.getComputer().setAantalStappen((Integer) comboBox.getSelectedItem());
             }
         });
         return comboBox;
@@ -85,7 +84,7 @@ public class OthelloFrame extends JFrame {
      */
     private JMenuBar maakMenu() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu file = new JMenu("Bestand");
+        JMenu file = new JMenu("Spel");
 
         JMenuItem nieuw = new JMenuItem("Nieuw");
         nieuw.addActionListener(new ActionListener() {
@@ -98,12 +97,7 @@ public class OthelloFrame extends JFrame {
             }
         });
         JMenuItem exit = new JMenuItem("Afsluiten");
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        exit.addActionListener(e -> System.exit(0));
         file.add(nieuw);
         file.add(exit);
         menuBar.add(file);
@@ -111,7 +105,6 @@ public class OthelloFrame extends JFrame {
         return menuBar;
 
     }
-
 
 
     /*
@@ -122,7 +115,7 @@ public class OthelloFrame extends JFrame {
 
         comboBox.setVisible(true);
         comboLabel.setVisible(true);
-        int aantalStappen = computer.getAantalStappen();
+        int aantalStappen = spel.getComputer().getAantalStappen();
 
         int keuze = JOptionPane.showOptionDialog(this,
                 "Tegen welke computer wil je spelen?",
@@ -134,12 +127,10 @@ public class OthelloFrame extends JFrame {
         switch (keuze) {
             case 0:
                 spel.setComputer(new MiniMaxAlphaBetaComputer(Kleur.ZWART));
-                this.computer = new MiniMaxAlphaBetaComputer(Kleur.ZWART);
                 this.setTitle("Othello MiniMax Alpha Beta");
                 break;
             case 1:
                 spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
-                this.computer = new MiniMaxComputer(Kleur.ZWART);
                 this.setTitle("Othello MiniMax");
 
                 break;
@@ -147,12 +138,11 @@ public class OthelloFrame extends JFrame {
                 comboBox.setVisible(false);
                 comboLabel.setVisible(false);
                 spel.setComputer(new HeuristicComputer(Kleur.ZWART));
-                this.computer = new HeuristicComputer(Kleur.ZWART);
                 this.setTitle("Othello MiniMax Heuristic");
 
                 break;
         }
-        computer.setAantalStappen(aantalStappen);
+        spel.getComputer().setAantalStappen(aantalStappen);
     }
 
 
@@ -178,8 +168,10 @@ public class OthelloFrame extends JFrame {
             toonWinVenster();
         } else if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
             startComputerWorker();
+
         }
 
+        this.toFront();
 
     }
 
@@ -187,29 +179,48 @@ public class OthelloFrame extends JFrame {
      * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
      */
     private void startComputerWorker() {
+        System.out.println("Start computerworker");
         comboBox.setEnabled(false);
+        computerWorker = createComputerWorker();
+        computerWorker.execute();
 
-        ComputerWorker computerWorker = new ComputerWorker(spel, computerProgressBar, computer);
+
+    }
+
+
+
+    private ComputerWorker createComputerWorker() {
+
+        ComputerWorker computerWorker = new ComputerWorker(spel, computerProgressBar);
         computerWorker.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("state".equals(evt.getPropertyName())
                         && (SwingWorker.StateValue.DONE.equals(evt.getNewValue()))) {
-                    System.out.println("updating!");
                     comboBox.setEnabled(true);
 
+                    if (treeFrame != null) {
+                        treeFrame.dispose();
+                    }
+                    treeFrame = new TreeFrame(spel.getBord());
+
                     herlaad();
+
+
                 }
+
+
 
             }
         });
-        computerWorker.execute();
+        return computerWorker;
 
     }
 
+
     /*
-     * Toont een venster bij het einde van het spel
-     */
+         * Toont een venster bij het einde van het spel
+         */
     private void toonWinVenster() {
 
         /*if (spel.getWinnaar() == Kleur.WIT) {
@@ -227,13 +238,7 @@ public class OthelloFrame extends JFrame {
 
 
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-
-        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
-            System.err.println("Stijl niet gelukt");
-        }
         OthelloFrame frame = new OthelloFrame();
     }
 }

@@ -16,46 +16,41 @@ import java.util.Observer;
  */
 public class ComputerWorker extends SwingWorker implements Observer {
     private Spel spel;
-    private ComputerProgressBar computerProgressBar;
-    private Computer computer;
+    private JProgressBar computerProgressBar;
+    private JFrame treeFrame;
 
-    public ComputerWorker(Spel spel, ComputerProgressBar computerProgressBar, Computer computer) {
+    public ComputerWorker(Spel spel, JProgressBar computerProgressBar) {
         this.spel = spel;
         this.computerProgressBar = computerProgressBar;
         computerProgressBar.setValue(0);
-        this.computer = computer;
-        Observable observable = (Observable) this.computer;
+        Observable observable = (Observable) spel.getComputer();
         observable.addObserver(this);
     }
 
     @Override
     protected Object doInBackground() throws Exception {
         spel.getBord().removeAllChildren();
-        Zet zet =  computer.berekenZet(spel.getBord());
-        spel.zetPion(zet.getRij(), zet.getKolom());
+        System.out.printf("Background work..");
+        spel.doeComputerZet();
 
-        JFrame frame = new JFrame("Tree");
-       /* DefaultMutableTreeNode root = new DefaultMutableTreeNode(1);
-
-        DefaultMutableTreeNode mercury = new DefaultMutableTreeNode(2);
-        root.add(mercury);
-        DefaultMutableTreeNode venus = new DefaultMutableTreeNode(3);
-        root.add(venus);
-        DefaultMutableTreeNode mars = new DefaultMutableTreeNode(4);
-        root.add(mars);*/
+        //maak visualisatie van tree
+       /*  treeFrame = new JFrame("Tree");
         JTree tree = new JTree(spel.getBord());
         JScrollPane scrollPane = new JScrollPane(tree);
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        frame.setSize(300, 150);
-        frame.setVisible(true);
+        treeFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        treeFrame.setSize(300, 150);
+        treeFrame.setVisible(true);*/
+
         return 1;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        computerProgressBar.setMaximum(computer.getDuur());
-        computerProgressBar.setValue(computer.getProgress());
+        computerProgressBar.setMaximum(spel.getComputer().getDuur());
+        computerProgressBar.setValue(spel.getComputer().getProgress());
         computerProgressBar.repaint();
 
     }
+
+
 }

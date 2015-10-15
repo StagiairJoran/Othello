@@ -21,9 +21,7 @@ public class OthelloButton extends JLabel {
         this.rij = rij;
         this.kolom = kolom;
         this.setBorder(BorderFactory.createRaisedBevelBorder());
-      //  this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.WHITE, Color.BLACK));
         this.setHorizontalAlignment(CENTER);
-        this.setForeground(Color.RED);
         this.setFont(new Font("Arial", Font.BOLD, 32));
         this.setOpaque(true);
 
@@ -35,7 +33,6 @@ public class OthelloButton extends JLabel {
         this.kleur = kleur;
         if (kleur == Kleur.ZWART) {
             this.setBackground(Color.BLACK);
-           // this.setBorder(BorderFactory.createLoweredBevelBorder());
             this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.GRAY, Color.WHITE));
         } else if (kleur == Kleur.WIT) {
             this.setBackground(Color.WHITE);

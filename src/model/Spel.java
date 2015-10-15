@@ -13,7 +13,7 @@ public class Spel {
     private Bord bord;
     private Kleur kleurAanDeBeurt;
     private boolean isSpelGedaan = false;
-    private Computer computer;
+    private Computer computer = new MiniMaxComputer(Kleur.ZWART);
 
     public Spel() {
         this.bord = new Bord();
@@ -88,6 +88,10 @@ public class Spel {
     public void setComputer(Computer computer) {
         this.computer = computer;
         System.out.println(computer);
+    }
+
+    public Computer getComputer() {
+        return computer;
     }
 
     public Bord getBord() {

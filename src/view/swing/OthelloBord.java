@@ -1,5 +1,6 @@
 package view.swing;
 
+import ai.Zet;
 import javafx.beans.Observable;
 import model.Kleur;
 import model.OngeldigeZet;
@@ -32,9 +33,16 @@ public class OthelloBord extends JPanel {
     }
 
     private void init() {
-        this.setLayout(new GridLayout(spel.getBord().getGrootteBord(), spel.getBord().getGrootteBord()));
+        this.setLayout(new GridLayout(spel.getBord().getGrootteBord() + 1 , spel.getBord().getGrootteBord() + 1));
+        this.add(new OthelloLabelButton(" "));
+
+        for (int x = 1; x < 9; x++){
+            this.add(new OthelloLabelButton(String.valueOf(x)));
+
+        }
 
         for (int i = 0; i < spel.getBord().getGrootteBord(); i++) {
+            this.add(new OthelloLabelButton(String.format("%c", Zet.zetRijOmNaarLetter(i + 1))));
             for (int j = 0; j < spel.getBord().getGrootteBord(); j++) {
                 OthelloButton button = new OthelloButton(i, j);
                 button.addMouseListener(new OthelloButtonListener());
