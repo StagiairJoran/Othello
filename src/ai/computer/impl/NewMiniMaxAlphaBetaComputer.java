@@ -11,7 +11,7 @@ import model.Kleur;
  */
 public class NewMiniMaxAlphaBetaComputer implements Computer {
     private Zet besteZet;
-    private int diepte;
+    private int aantalStappen;
     private HeuristicCalculator calculator;
     private double allerBestHeuristicValue;
 
@@ -24,17 +24,37 @@ public class NewMiniMaxAlphaBetaComputer implements Computer {
         return null;
     }
 
+    @Override
+    public void setAantalStappen(int aantalStappen) {
+
+    }
+
+    @Override
+    public int getAantalStappen() {
+        return aantalStappen;
+    }
+
+    @Override
+    public int getDuur() {
+        return 0;
+    }
+
+    @Override
+    public int getProgress() {
+        return 0;
+    }
+
     private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleurAanZet) {
         double bestHeuristicValue;
         Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
 
-        if (diepte == 0) {
+        if (aantalStappen == 0) {
             bestHeuristicValue = calculator.getHeuristicValue(bord, kleurAanZet);
-            diepte++;
+            aantalStappen++;
         } else if (kleurAanZet == Kleur.WIT) {
             bestHeuristicValue = alpha;
             for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                diepte--;
+                aantalStappen--;
                 Bord tijdelijBord = bord;
                 tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
                 bestHeuristicValue = Math.max(alphaBeta(tijdelijBord, bestHeuristicValue, beta, volgendeKleurAanZet), bestHeuristicValue);
@@ -45,11 +65,11 @@ public class NewMiniMaxAlphaBetaComputer implements Computer {
         } else {
             bestHeuristicValue = beta;
             for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                diepte--;
+                aantalStappen--;
                 Bord tijdelijBord = bord;
                 tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
                 bestHeuristicValue = Math.min(alphaBeta(tijdelijBord, alpha, bestHeuristicValue, volgendeKleurAanZet), bestHeuristicValue);
-                if (diepte == 4 && allerBestHeuristicValue < bestHeuristicValue){
+                if (aantalStappen == 4 && allerBestHeuristicValue < bestHeuristicValue){
                     besteZet = bord.geefGeldigeZetten(kleurAanZet).get(i);
                 }
                 if (bestHeuristicValue <= alpha){

@@ -1,6 +1,7 @@
 package ai.computer.impl;
 
 import ai.Zet;
+import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
 import ai.heuristic.api.HeuristicCalculator;
 import ai.heuristic.impl.CompleteHeuristicCalculator;
@@ -13,55 +14,77 @@ import model.Kleur;
  * Computer is zwart en speelt als tweede.
  * Max heeft als kleur zwart
  */
-public class NewMiniMaxComputer implements Computer {
-    private Zet besteZet;
+public class NewMiniMaxComputer  extends ObservableAI implements Computer {
+    private Zet ultiemeZet;
     private int aantalStappen;
     private HeuristicCalculator calculator;
-    private double allerBestHeuristicValue;
+    private double ultiemeHeuristicValue;
 
     public NewMiniMaxComputer() {
-        //besteZet = ;
-        aantalStappen = 2;
         calculator = new CompleteHeuristicCalculator();
-        allerBestHeuristicValue = Double.NEGATIVE_INFINITY;
-
+        ultiemeHeuristicValue = Double.NEGATIVE_INFINITY;
     }
 
     @Override
     public Zet berekenZet(Bord bord) {
         miniMax(bord, Kleur.ZWART);
-        return besteZet;
+        return ultiemeZet;
+    }
+
+    @Override
+    public void setAantalStappen(int aantalStappen) {
+        this.aantalStappen = aantalStappen;
+    }
+
+    @Override
+    public int getAantalStappen() {
+        return aantalStappen;
+    }
+
+    @Override
+    public int getDuur() {
+        return 0;
+    }
+
+    @Override
+    public int getProgress() {
+        return 0;
     }
 
     private double miniMax(Bord bord, Kleur kleurAanZet) {
-        double bestHeuristicValue;
+        double besteWaarde;
         Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
 
         if (aantalStappen == 0) {
-            bestHeuristicValue = calculator.getHeuristicValue(bord, kleurAanZet);
+            besteWaarde = calculator.getHeuristicValue(bord, kleurAanZet);
         } else if (kleurAanZet == Kleur.WIT) {
-            bestHeuristicValue = Double.POSITIVE_INFINITY;
-            for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                Bord tijdelijBord = new Bord(bord);
+            besteWaarde = Double.POSITIVE_INFINITY;
+            for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){
+                Bord duplicaat = new Bord(bord);
                 aantalStappen--;
-                tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.min(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
+                duplicaat.zetPion(zet, kleurAanZet);
+                besteWaarde = Math.min(miniMax(duplicaat, volgendeKleurAanZet), besteWaarde);
+
+                duplicaat.setUserObject(" " + Math.round(besteWaarde) + zet);
+                bord.add(duplicaat);
             }
         } else {
-            bestHeuristicValue = Double.NEGATIVE_INFINITY;
-            for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                Bord tijdelijBord = new Bord(bord);
+            besteWaarde = Double.NEGATIVE_INFINITY;
+            for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){
+                Bord duplicaat = new Bord(bord);
                 aantalStappen--;
-                tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.max(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
-                if (aantalStappen == 4 && allerBestHeuristicValue < bestHeuristicValue){
-                    besteZet = bord.geefGeldigeZetten(kleurAanZet).get(i);
-                    allerBestHeuristicValue = bestHeuristicValue;
+                duplicaat.zetPion(zet, kleurAanZet);
+                besteWaarde = Math.max(miniMax(duplicaat, volgendeKleurAanZet), besteWaarde);
+                if (aantalStappen == 4 && ultiemeHeuristicValue < besteWaarde){
+                    ultiemeZet = zet;
+                    ultiemeHeuristicValue = besteWaarde;
                 }
+                duplicaat.setUserObject(" " + Math.round(besteWaarde) + zet);
+                bord.add(duplicaat);
             }
         }
         aantalStappen++;
-        return bestHeuristicValue;
+        return besteWaarde;
     }
 
 }

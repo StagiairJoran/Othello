@@ -2,14 +2,13 @@ package ai.heuristic.impl;
 
 import factories.BordWrapperFactory;
 import model.Bord;
-import model.BordWrapper;
 import model.Kleur;
 import org.junit.Test;
 
 
 import static org.junit.Assert.*;
 
-/**
+/**,
  * Created by jorandeboever
  * on 7/10/15.
  */

@@ -119,7 +119,6 @@ public class CompleteHeuristicCalculator implements HeuristicCalculator {
             aantalMin++;
         }
 
-
         return 25 * (aantalMax - aantalMin);
     }
 
