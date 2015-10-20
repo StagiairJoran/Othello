@@ -134,8 +134,9 @@ public class OthelloFrame extends JFrame {
                 this.setTitle("Othello MiniMax");
                 break;
             case 3:
-                spel.setComputer(new NewMiniMaxComputer());
+                spel.setComputer(new NewMiniMaxComputer(Kleur.ZWART));
                 this.setTitle("Othello NewMiniMax");
+
                 break;
             default:
                 comboBox.setVisible(false);

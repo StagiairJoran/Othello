@@ -18,16 +18,19 @@ public class NewMiniMaxComputer  extends ObservableAI implements Computer {
     private Zet ultiemeZet;
     private int aantalStappen;
     private HeuristicCalculator calculator;
-    private double ultiemeHeuristicValue;
+    private Kleur computerKleur;
 
-    public NewMiniMaxComputer() {
+    public NewMiniMaxComputer(Kleur kleur) {
         calculator = new CompleteHeuristicCalculator();
-        ultiemeHeuristicValue = Double.NEGATIVE_INFINITY;
+        computerKleur = kleur;
+        aantalStappen = 3;
     }
 
     @Override
     public Zet berekenZet(Bord bord) {
-        miniMax(bord, Kleur.ZWART);
+        ultiemeZet = new Zet(9, 9);
+        ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
+        miniMax(bord, Kleur.ZWART, aantalStappen);
         return ultiemeZet;
     }
 
@@ -51,40 +54,43 @@ public class NewMiniMaxComputer  extends ObservableAI implements Computer {
         return 0;
     }
 
-    private double miniMax(Bord bord, Kleur kleurAanZet) {
-        double besteWaarde;
-        Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
+    private double miniMax(Bord bord, Kleur kleurAanZet, int aantalStappen) {
+        double kindWaarde;
 
-        if (aantalStappen == 0) {
-            besteWaarde = calculator.getHeuristicValue(bord, kleurAanZet);
-        } else if (kleurAanZet == Kleur.WIT) {
-            besteWaarde = Double.POSITIVE_INFINITY;
+        if (aantalStappen == 0 || bord.geefGeldigeZetten(kleurAanZet).size() == 0) {
+            kindWaarde = calculator.getHeuristicValue(bord, computerKleur);
+        } else if (kleurAanZet == computerKleur) {
+            kindWaarde = Double.NEGATIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){
                 Bord duplicaat = new Bord(bord);
-                aantalStappen--;
                 duplicaat.zetPion(zet, kleurAanZet);
-                besteWaarde = Math.min(miniMax(duplicaat, volgendeKleurAanZet), besteWaarde);
+                double kleinKindWaarde = miniMax(duplicaat, Kleur.andereKleur(kleurAanZet), aantalStappen -1);
+                kindWaarde = Math.max(kleinKindWaarde, kindWaarde);
 
-                duplicaat.setUserObject(" " + Math.round(besteWaarde) + zet);
+                if (aantalStappen == this.aantalStappen){
+                    if (ultiemeZet.getWaarde() < kleinKindWaarde) {
+                        ultiemeZet = zet;
+                        ultiemeZet.setWaarde(kleinKindWaarde);
+                    }
+                    //iets voor prograssbar
+                }
+                duplicaat.setUserObject(" " + Math.round(kleinKindWaarde) + zet);
                 bord.add(duplicaat);
             }
         } else {
-            besteWaarde = Double.NEGATIVE_INFINITY;
+            kindWaarde = Double.POSITIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){
                 Bord duplicaat = new Bord(bord);
-                aantalStappen--;
                 duplicaat.zetPion(zet, kleurAanZet);
-                besteWaarde = Math.max(miniMax(duplicaat, volgendeKleurAanZet), besteWaarde);
-                if (aantalStappen == 4 && ultiemeHeuristicValue < besteWaarde){
-                    ultiemeZet = zet;
-                    ultiemeHeuristicValue = besteWaarde;
-                }
-                duplicaat.setUserObject(" " + Math.round(besteWaarde) + zet);
+                double kleinKindWaarde = miniMax(duplicaat, Kleur.andereKleur(kleurAanZet), aantalStappen -1);
+                kindWaarde = Math.min(kleinKindWaarde, kindWaarde);
+
+                duplicaat.setUserObject(" " + Math.round(kleinKindWaarde) + zet);
                 bord.add(duplicaat);
             }
         }
-        aantalStappen++;
-        return besteWaarde;
+
+        return kindWaarde;
     }
 
 }

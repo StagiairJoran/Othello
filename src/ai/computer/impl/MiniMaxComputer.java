@@ -24,35 +24,13 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
 
     public MiniMaxComputer(Kleur kleur) {
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 7;
+        this.aantalStappen = 3;
         this.computerKleur = kleur;
 
     }
 
 
     public Zet berekenZet(Bord bord) {
-    /*    //Haal mogelijke zetten op
-        List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
-        this.setDuur(zetten.size());
-        //kies beste zet
-        int i = 0;
-        Zet besteZet = null;
-        double besteWaarde = Double.NEGATIVE_INFINITY;
-        for (Zet zet : zetten) {
-            Bord duplicaat = new Bord(bord);
-            duplicaat.zetPion(zet.getRij(), zet.getKolom(), computerKleur);
-
-            zet.setWaarde(miniMax(duplicaat, Kleur.andereKleur(computerKleur), aantalStappen - 1));
-            if (zet.getWaarde() > besteWaarde || besteZet == null) {
-                besteZet = zet;
-                besteWaarde = zet.getWaarde();
-            }
-            this.setProgress(++i);
-            setChanged();
-            notifyObservers();
-
-        }
-        return besteZet;*/
         ultiemeZet = new Zet(100, 100);
         ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
         miniMax(bord, computerKleur, aantalStappen);
@@ -65,10 +43,10 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
      */
     private double miniMax(Bord bord, Kleur kleur, int aantalStappen) {
         double besteWaarde;
+
         if (0 == aantalStappen || bord.geefGeldigeZetten(kleur).size() == 0) {
             //stopconditie
             besteWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
-
         } else if (kleur == computerKleur) {
             // Max
             List<Zet> zetten = bord.geefGeldigeZetten(kleur);
@@ -105,7 +83,6 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
-
 
                 if (besteWaarde == childWaarde) {
                     duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
