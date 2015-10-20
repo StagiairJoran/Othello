@@ -139,6 +139,7 @@ public class OthelloFrame extends JFrame {
             case 3:
                 spel.setComputer(new NewMiniMaxComputer(Kleur.ZWART));
                 this.setTitle("Othello NewMiniMax");
+
                 break;
             default:
                 comboBox.setVisible(false);
@@ -176,7 +177,6 @@ public class OthelloFrame extends JFrame {
 
             int aantalStappen = spel.getComputer().getAantalStappen();
             spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
-            spel.getComputer().setHeuristicCalculator(new SimpleHeuristicCalculator());
             spel.getComputer().setAantalStappen(aantalStappen);
             startComputerWorker();
 
@@ -184,6 +184,7 @@ public class OthelloFrame extends JFrame {
             // Computer tegen computer
            /* int aantalStappen = spel.getComputer().getAantalStappen();
             spel.setComputer(new MiniMaxComputer(Kleur.WIT));
+            spel.getComputer().setHeuristicCalculator(new SimpleHeuristicCalculator());
             spel.getComputer().setAantalStappen(aantalStappen);
             startComputerWorker();*/
         }
