@@ -15,18 +15,21 @@ import model.Kleur;
  */
 public class NewMiniMaxComputer implements Computer {
     private Zet besteZet;
-    private int diepte;
+    private int aantalStappen;
     private HeuristicCalculator calculator;
     private double allerBestHeuristicValue;
 
     public NewMiniMaxComputer() {
         //besteZet = ;
-        diepte = 4;
+        aantalStappen = 2;
         calculator = new CompleteHeuristicCalculator();
+        allerBestHeuristicValue = Double.NEGATIVE_INFINITY;
+
     }
 
     @Override
     public Zet berekenZet(Bord bord) {
+        miniMax(bord, Kleur.ZWART);
         return besteZet;
     }
 
@@ -34,33 +37,31 @@ public class NewMiniMaxComputer implements Computer {
         double bestHeuristicValue;
         Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
 
-        if (diepte == 0) {
+        if (aantalStappen == 0) {
             bestHeuristicValue = calculator.getHeuristicValue(bord, kleurAanZet);
-
-            diepte++;
         } else if (kleurAanZet == Kleur.WIT) {
             bestHeuristicValue = Double.POSITIVE_INFINITY;
             for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                diepte--;
-                Bord tijdelijBord = bord;
+                Bord tijdelijBord = new Bord(bord);
+                aantalStappen--;
                 tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.max(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
+                bestHeuristicValue = Math.min(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
             }
         } else {
             bestHeuristicValue = Double.NEGATIVE_INFINITY;
             for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                diepte--;
-                Bord tijdelijBord = bord;
+                Bord tijdelijBord = new Bord(bord);
+                aantalStappen--;
                 tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.min(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
-                if (diepte == 4 && allerBestHeuristicValue < bestHeuristicValue){
+                bestHeuristicValue = Math.max(miniMax(tijdelijBord, volgendeKleurAanZet), bestHeuristicValue);
+                if (aantalStappen == 4 && allerBestHeuristicValue < bestHeuristicValue){
                     besteZet = bord.geefGeldigeZetten(kleurAanZet).get(i);
+                    allerBestHeuristicValue = bestHeuristicValue;
                 }
             }
         }
-
+        aantalStappen++;
         return bestHeuristicValue;
     }
 
 }
-
