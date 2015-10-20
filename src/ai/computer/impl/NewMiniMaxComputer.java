@@ -16,9 +16,7 @@ import model.Kleur;
  */
 public class NewMiniMaxComputer  extends Computer {
     private Zet ultiemeZet;
-    private int aantalStappen;
-    private HeuristicCalculator calculator;
-    private Kleur computerKleur;
+
 
     public NewMiniMaxComputer(Kleur kleur) {
         super(kleur);
@@ -38,7 +36,7 @@ public class NewMiniMaxComputer  extends Computer {
         double kindWaarde;
 
         if (aantalStappen == 0 || bord.geefGeldigeZetten(kleurAanZet).size() == 0) {
-            kindWaarde = calculator.getHeuristicValue(bord, computerKleur);
+            kindWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
         } else if (kleurAanZet == computerKleur) {
             kindWaarde = Double.NEGATIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){
