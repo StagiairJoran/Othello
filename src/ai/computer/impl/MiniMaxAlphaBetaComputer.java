@@ -18,18 +18,13 @@ import java.util.Observable;
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe met alpha-beta pruning
  */
-public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
-    private HeuristicCalculator heuristicCalculator;
-    private Kleur computerKleur;
-    private int aantalStappen;
+public class MiniMaxAlphaBetaComputer extends  Computer {
     private Zet ultiemeZet;
 
 
 
     public MiniMaxAlphaBetaComputer(Kleur kleur) {
-        this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 7;
-        this.computerKleur = kleur;
+        super(kleur);
 
     }
 
@@ -133,11 +128,4 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
 
 
 
-    public void setAantalStappen(int aantalStappen) {
-        this.aantalStappen = aantalStappen;
-    }
-
-    public int getAantalStappen() {
-        return aantalStappen;
-    }
 }

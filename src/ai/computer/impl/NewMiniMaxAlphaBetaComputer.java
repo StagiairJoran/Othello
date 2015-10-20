@@ -9,13 +9,12 @@ import model.Kleur;
 /**
  * Created by JoachimDs on 19/10/2015.
  */
-public class NewMiniMaxAlphaBetaComputer implements Computer {
+public class NewMiniMaxAlphaBetaComputer extends Computer {
     private Zet besteZet;
-    private int aantalStappen;
-    private HeuristicCalculator calculator;
     private double allerBestHeuristicValue;
 
-    public NewMiniMaxAlphaBetaComputer() {
+    public NewMiniMaxAlphaBetaComputer(Kleur kleur) {
+        super(kleur);
         allerBestHeuristicValue = Double.NEGATIVE_INFINITY;
     }
 
@@ -24,32 +23,14 @@ public class NewMiniMaxAlphaBetaComputer implements Computer {
         return null;
     }
 
-    @Override
-    public void setAantalStappen(int aantalStappen) {
 
-    }
-
-    @Override
-    public int getAantalStappen() {
-        return aantalStappen;
-    }
-
-    @Override
-    public int getDuur() {
-        return 0;
-    }
-
-    @Override
-    public int getProgress() {
-        return 0;
-    }
 
     private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleurAanZet) {
         double bestHeuristicValue;
         Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
 
         if (aantalStappen == 0) {
-            bestHeuristicValue = calculator.getHeuristicValue(bord, kleurAanZet);
+            bestHeuristicValue = heuristicCalculator.getHeuristicValue(bord, kleurAanZet);
             aantalStappen++;
         } else if (kleurAanZet == Kleur.WIT) {
             bestHeuristicValue = alpha;
@@ -80,5 +61,6 @@ public class NewMiniMaxAlphaBetaComputer implements Computer {
 
         return bestHeuristicValue;
     }
+
 
 }

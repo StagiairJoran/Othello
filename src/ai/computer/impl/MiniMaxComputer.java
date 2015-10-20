@@ -15,17 +15,13 @@ import java.util.List;
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe
  */
-public class MiniMaxComputer extends ObservableAI implements Computer {
-    private HeuristicCalculator heuristicCalculator;
-    private Kleur computerKleur;
-    private int aantalStappen;
+public class MiniMaxComputer extends Computer {
+
     private Zet ultiemeZet;
 
 
     public MiniMaxComputer(Kleur kleur) {
-        this.heuristicCalculator = new CompleteHeuristicCalculator();
-        this.aantalStappen = 7;
-        this.computerKleur = kleur;
+        super(kleur);
 
     }
 
@@ -102,7 +98,7 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
             besteWaarde = Double.POSITIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleur)) {
                 Bord duplicaat = new Bord(bord);
-                duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
+                duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur); //TODO gebruik zet
                 double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
 
@@ -123,11 +119,5 @@ public class MiniMaxComputer extends ObservableAI implements Computer {
         return besteWaarde;
     }
 
-    public void setAantalStappen(int aantalStappen) {
-        this.aantalStappen = aantalStappen;
-    }
 
-    public int getAantalStappen() {
-        return aantalStappen;
-    }
 }
