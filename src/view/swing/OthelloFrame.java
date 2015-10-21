@@ -66,7 +66,8 @@ public class OthelloFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        toonComputerOpties();
+      //  toonComputerOpties();
+        InstellingenFrame instellingenFrame = new InstellingenFrame(this);
         herlaad();
 
 
@@ -85,131 +86,6 @@ public class OthelloFrame extends JFrame {
         return comboBox;
     }
 
-    /*
-     * Maakt klein menubar met menu-items
-     */
-    private JMenuBar maakMenu() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu spelMenu = new JMenu("Spel");
-
-        JMenuItem nieuw = new JMenuItem("Nieuw");
-        nieuw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                spel = new Spel();
-                teller = 0;
-                othelloBord.setSpel(spel);
-                herlaad();
-                toonComputerOpties();
-            }
-        });
-        JMenuItem exit = new JMenuItem("Afsluiten");
-        exit.addActionListener(e -> System.exit(0));
-        spelMenu.add(nieuw);
-        spelMenu.add(exit);
-        menuBar.add(spelMenu);
-
-
-        JMenu debugMenu = new JMenu("Debug");
-        JMenuItem jtreeCheckBoxItem = new JCheckBoxMenuItem("Jtree");
-        jtreeCheckBoxItem.addActionListener(e -> {
-            AbstractButton aButton = (AbstractButton) e.getSource();
-            toonTreeFrame = aButton.getModel().isSelected();
-        });
-        debugMenu.add(jtreeCheckBoxItem);
-        menuBar.add(debugMenu);
-
-
-        // Menu voor Witte speler
-        JMenu witteSpelerMenu = new JMenu("Witte speler");
-        JMenu computerItem = new JMenu("Computer");
-        ButtonGroup buttonGroup = new ButtonGroup();
-        JRadioButtonMenuItem leeg = new JRadioButtonMenuItem("geen");
-        leeg.addActionListener(e -> {
-            witteComputer = null;
-        });
-        leeg.setSelected(true);
-        buttonGroup.add(leeg);
-        computerItem.add(leeg);
-        for (Computer c : Computer.geefAlleComputers()){
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(c.toString());
-            buttonGroup.add(menuItem);
-            menuItem.addActionListener(e -> {
-                witteComputer = c;
-                witteComputer.setKleur(Kleur.WIT);
-            });
-            computerItem.add(menuItem);
-        }
-        witteSpelerMenu.add(computerItem);
-
-
-        JMenu heuristicCalculatorMenu = new JMenu("Heuristic");
-        ButtonGroup heuristicButtonGroup = new ButtonGroup();
-        for(HeuristicCalculator calculator : HeuristicCalculator.geefAlleCalculators()){
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(calculator.toString());
-            heuristicButtonGroup.add(menuItem);
-            menuItem.addActionListener(e -> {
-                witteComputer.setHeuristicCalculator(calculator);
-            });
-            try  {
-                if(witteComputer.getHeuristicCalculator().getClass() == calculator.getClass()){
-                    menuItem.setSelected(true);
-                }
-            }catch (NullPointerException ignored){
-
-            }
-
-            heuristicCalculatorMenu.add(menuItem);
-        }
-        witteSpelerMenu.add(heuristicCalculatorMenu);
-        menuBar.add(witteSpelerMenu);
-
-
-        // Menu voor Zwarte speler
-        JMenu zwarteSpelerMenu = new JMenu("Zwarte speler");
-        JMenu zwarteComputerMenu = new JMenu("Computer");
-        ButtonGroup zwarteButtonGroup = new ButtonGroup();
-
-        for (Computer c : Computer.geefAlleComputers()){
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(c.toString());
-            zwarteButtonGroup.add(menuItem);
-            menuItem.addActionListener(e -> {
-                zwarteComputer = c;
-                zwarteComputer.setKleur(Kleur.ZWART);
-            });
-            if (c.getClass() == zwarteComputer.getClass()){
-                menuItem.setSelected(true);
-            }
-            zwarteComputerMenu.add(menuItem);
-        }
-        zwarteSpelerMenu.add(zwarteComputerMenu);
-
-
-        JMenu heuristicCalculatorMenuZwart = new JMenu("Heuristic");
-        ButtonGroup heuristicButtonGroupZwart = new ButtonGroup();
-        for(HeuristicCalculator calculator : HeuristicCalculator.geefAlleCalculators()){
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(calculator.toString());
-            heuristicButtonGroupZwart.add(menuItem);
-            menuItem.addActionListener(e -> {
-                zwarteComputer.setHeuristicCalculator(calculator);
-            });
-            try  {
-                if(zwarteComputer.getHeuristicCalculator().getClass() == calculator.getClass()){
-                    menuItem.setSelected(true);
-                }
-            }catch (NullPointerException ignored){
-
-            }
-            heuristicCalculatorMenuZwart.add(menuItem);
-
-        }
-        zwarteSpelerMenu.add(heuristicCalculatorMenuZwart);
-        menuBar.add(zwarteSpelerMenu);
-
-
-        return menuBar;
-
-    }
 
 
     /*
@@ -290,7 +166,7 @@ public class OthelloFrame extends JFrame {
             doeComputerZet();
         }
 
-        this.toFront();
+
 
     }
 
@@ -336,6 +212,21 @@ public class OthelloFrame extends JFrame {
 
     }
 
+    public Computer getComputer(Kleur kleur) {
+        if(kleur == Kleur.WIT){
+            return witteComputer;
+        }else {
+            return zwarteComputer;
+        }
+    }
+
+    public void setComputer(Kleur kleur, Computer computer) {
+        if(kleur == Kleur.WIT){
+           witteComputer = computer;
+        }else {
+             zwarteComputer = computer;
+        }
+    }
 
     public static void main(String[] args) {
         OthelloFrame frame = new OthelloFrame();

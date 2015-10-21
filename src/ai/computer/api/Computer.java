@@ -27,6 +27,12 @@ public abstract class Computer extends ObservableAI{
          aantalStappen =  3;
     }
 
+    public Computer(Computer computer) {
+        this.computerKleur = computer.getKleur();
+        this.aantalStappen = computer.getAantalStappen();
+        this.heuristicCalculator = computer.getHeuristicCalculator();
+    }
+
     public abstract Zet berekenZet(Bord bord);
 
 

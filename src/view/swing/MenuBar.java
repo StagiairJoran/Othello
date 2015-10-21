@@ -26,7 +26,7 @@ public class MenuBar extends JMenuBar {
 
         maakSpelMenu(frame);
         maakDebugMenu(frame);
-        maakSpelersMenu(frame);
+    //    maakSpelersMenu(frame);
         herlaad(frame);
     }
 
@@ -160,14 +160,19 @@ public class MenuBar extends JMenuBar {
                 frame.spel = new Spel();
                 frame.teller = 0;
                 frame.othelloBord.setSpel(frame.spel);
-                frame.toonComputerOpties();
+                new InstellingenFrame(frame);
                 frame.herlaad();
                 frame.witteComputer = null;
             }
         });
         JMenuItem exit = new JMenuItem("Afsluiten");
         exit.addActionListener(e -> System.exit(0));
+
+        JMenuItem instellingen = new JMenuItem("Instellingen");
+        instellingen.addActionListener(e -> new InstellingenFrame(frame));
+
         spelMenu.add(nieuw);
+        spelMenu.add(instellingen);
         spelMenu.add(exit);
         this.add(spelMenu);
     }
