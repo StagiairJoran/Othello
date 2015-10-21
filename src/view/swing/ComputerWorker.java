@@ -1,5 +1,6 @@
 package view.swing;
 
+import ai.computer.api.Computer;
 import model.Spel;
 
 import javax.swing.*;
@@ -13,27 +14,29 @@ import java.util.Observer;
 public class ComputerWorker extends SwingWorker implements Observer {
     private Spel spel;
     private JProgressBar computerProgressBar;
+    private Computer computer;
 
-    public ComputerWorker(Spel spel, JProgressBar computerProgressBar) {
+    public ComputerWorker(Spel spel, JProgressBar computerProgressBar, Computer computer) {
         this.spel = spel;
         this.computerProgressBar = computerProgressBar;
         computerProgressBar.setValue(0);
-        Observable observable =  spel.getComputer();
+        this.computer = computer;
+        Observable observable =  computer;
         observable.addObserver(this);
     }
 
     @Override
     protected Object doInBackground() throws Exception {
         spel.getBord().removeAllChildren();
-        spel.doeComputerZet();
+        spel.zetPion(computer.berekenZet(spel.getBord()));
 
         return 1;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        computerProgressBar.setMaximum(spel.getComputer().getDuur());
-        computerProgressBar.setValue(spel.getComputer().getProgress());
+        computerProgressBar.setMaximum(computer.getDuur());
+        computerProgressBar.setValue(computer.getProgress());
         computerProgressBar.repaint();
 
     }

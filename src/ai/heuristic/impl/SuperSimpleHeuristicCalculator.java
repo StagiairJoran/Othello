@@ -13,7 +13,7 @@ import model.Kleur;
  ** Aantal zetten dat elke speler kan doen
  ** Aantal hoeken van een spelbord dat elke speler bezit
  */
-public class SuperSimpleHeuristicCalculator implements HeuristicCalculator {
+public class SuperSimpleHeuristicCalculator extends HeuristicCalculator {
     public double getHeuristicValue(Bord bord, Kleur kleur) {
 
 

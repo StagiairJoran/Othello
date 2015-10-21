@@ -13,12 +13,10 @@ public class Spel {
     private Bord bord;
     private Kleur kleurAanDeBeurt;
     private boolean isSpelGedaan = false;
-    private Computer computer = new MiniMaxComputer(Kleur.ZWART);
 
     public Spel() {
         this.bord = new Bord();
         this.kleurAanDeBeurt = Kleur.WIT;
-        this.computer = new MiniMaxComputer(Kleur.ZWART);
     }
 
     public Kleur getWinnaar(){
@@ -64,6 +62,15 @@ public class Spel {
         controleerOfSpelGedaanIs();
     }
 
+    public void zetPion(Zet zet) throws OngeldigeZet {
+        bord.zetPion(zet.getRij(), zet.getKolom(), kleurAanDeBeurt);
+        veranderSpeler();
+        if (!bord.zijnErGeldigeZetten(kleurAanDeBeurt)) {
+            veranderSpeler();
+        }
+        controleerOfSpelGedaanIs();
+    }
+
     private void controleerOfSpelGedaanIs() {
         if (!bord.zijnErGeldigeZetten()) {
             isSpelGedaan = true;
@@ -78,19 +85,9 @@ public class Spel {
         }
     }
 
-    public void doeComputerZet(){
-        Zet computerZet = computer.berekenZet(bord);
-        this.zetPion(computerZet.getRij(), computerZet.getKolom());
 
-    }
 
-    public void setComputer(Computer computer) {
-        this.computer = computer;
-    }
 
-    public Computer getComputer() {
-        return computer;
-    }
 
     public Bord getBord() {
         return bord;

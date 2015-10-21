@@ -13,7 +13,7 @@ import model.Kleur;
  ** Aantal zetten dat elke speler kan doen
  ** Aantal hoeken van een spelbord dat elke speler bezit
  */
-public class SimpleHeuristicCalculator implements HeuristicCalculator {
+public class SimpleHeuristicCalculator extends HeuristicCalculator {
     public double getHeuristicValue(Bord bord, Kleur kleur) {
         double coinParityHeuristicValue = getCoinParityHeuristicValue(bord, kleur);
         double mobilityHeuristicValue = getMobilityHeuristicValue(bord, kleur);
