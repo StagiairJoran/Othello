@@ -160,9 +160,10 @@ public class MenuBar extends JMenuBar {
                 frame.spel = new Spel();
                 frame.teller = 0;
                 frame.othelloBord.setSpel(frame.spel);
+                frame.witteComputer = null;
                 new InstellingenFrame(frame);
                 frame.herlaad();
-                frame.witteComputer = null;
+
             }
         });
         JMenuItem exit = new JMenuItem("Afsluiten");
