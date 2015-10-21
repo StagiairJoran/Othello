@@ -4,7 +4,9 @@ import ai.computer.impl.HeuristicComputer;
 import ai.computer.impl.MiniMaxAlphaBetaComputer;
 import ai.computer.impl.MiniMaxComputer;
 import ai.computer.impl.NewMiniMaxComputer;
+import ai.heuristic.impl.CompleteHeuristicCalculator;
 import ai.heuristic.impl.SimpleHeuristicCalculator;
+import ai.heuristic.impl.SuperSimpleHeuristicCalculator;
 import model.Kleur;
 import model.Spel;
 
@@ -30,6 +32,7 @@ public class OthelloFrame extends JFrame {
     ComputerWorker computerWorker;
     TreeFrame treeFrame;
     int teller = 0;
+    private boolean toonTreeFrame = false;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
@@ -86,7 +89,7 @@ public class OthelloFrame extends JFrame {
      */
     private JMenuBar maakMenu() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu file = new JMenu("Spel");
+        JMenu spelMenu = new JMenu("Spel");
 
         JMenuItem nieuw = new JMenuItem("Nieuw");
         nieuw.addActionListener(new ActionListener() {
@@ -101,9 +104,22 @@ public class OthelloFrame extends JFrame {
         });
         JMenuItem exit = new JMenuItem("Afsluiten");
         exit.addActionListener(e -> System.exit(0));
-        file.add(nieuw);
-        file.add(exit);
-        menuBar.add(file);
+        spelMenu.add(nieuw);
+        spelMenu.add(exit);
+        menuBar.add(spelMenu);
+
+
+        JMenu debugMenu = new JMenu("Debug");
+        JMenuItem jtreeCheckBoxItem = new JCheckBoxMenuItem("Jtree");
+        jtreeCheckBoxItem.addActionListener(e -> {
+            AbstractButton aButton = (AbstractButton) e.getSource();
+            toonTreeFrame = aButton.getModel().isSelected();
+        });
+        debugMenu.add(jtreeCheckBoxItem);
+        menuBar.add(debugMenu);
+
+
+
 
         return menuBar;
 
@@ -175,17 +191,14 @@ public class OthelloFrame extends JFrame {
             toonWinVenster();
         } else if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
 
-            int aantalStappen = spel.getComputer().getAantalStappen();
-            spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
-            spel.getComputer().setAantalStappen(aantalStappen);
+            spel.getComputer().setKleur(Kleur.ZWART);
+            spel.getComputer().setHeuristicCalculator(new CompleteHeuristicCalculator());
             startComputerWorker();
 
         } else if (spel.getKleurAanDeBeurt() == Kleur.WIT && teller++ > 0) {
             // Computer tegen computer
-           /* int aantalStappen = spel.getComputer().getAantalStappen();
-            spel.setComputer(new MiniMaxComputer(Kleur.WIT));
-            spel.getComputer().setHeuristicCalculator(new SimpleHeuristicCalculator());
-            spel.getComputer().setAantalStappen(aantalStappen);
+           /* spel.getComputer().setKleur(Kleur.WIT);
+            spel.getComputer().setHeuristicCalculator(new CompleteHeuristicCalculator());
             startComputerWorker();*/
         }
 
@@ -197,7 +210,6 @@ public class OthelloFrame extends JFrame {
      * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
      */
     private void startComputerWorker() {
-        System.out.println("Start computerworker");
         comboBox.setEnabled(false);
         computerWorker = createComputerWorker();
         computerWorker.execute();
@@ -216,8 +228,8 @@ public class OthelloFrame extends JFrame {
                     if (treeFrame != null) {
                         treeFrame.dispose();
                     }
-                 //   treeFrame = new TreeFrame(spel.getBord());
-                    System.out.printf("herladen...");
+                    if (toonTreeFrame) treeFrame = new TreeFrame(spel.getBord());
+
                     herlaad();
 
                 }

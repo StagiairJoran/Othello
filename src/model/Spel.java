@@ -81,7 +81,6 @@ public class Spel {
     public void doeComputerZet(){
         Zet computerZet = computer.berekenZet(bord);
         this.zetPion(computerZet.getRij(), computerZet.getKolom());
-        System.out.println("Computer doet zet naar: rij=" + computerZet.getRij() + ", kolom=" + computerZet.getKolom());
 
     }
 

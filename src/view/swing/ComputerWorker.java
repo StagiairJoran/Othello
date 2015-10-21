@@ -13,7 +13,6 @@ import java.util.Observer;
 public class ComputerWorker extends SwingWorker implements Observer {
     private Spel spel;
     private JProgressBar computerProgressBar;
-    private JFrame treeFrame;
 
     public ComputerWorker(Spel spel, JProgressBar computerProgressBar) {
         this.spel = spel;
@@ -26,7 +25,6 @@ public class ComputerWorker extends SwingWorker implements Observer {
     @Override
     protected Object doInBackground() throws Exception {
         spel.getBord().removeAllChildren();
-        System.out.printf("Background work..");
         spel.doeComputerZet();
 
         return 1;
