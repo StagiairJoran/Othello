@@ -65,13 +65,9 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
                     }
                     update(++i, zetten.size());
                 }
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde) + zet);
 
-                }
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
                 if (beta <= besteWaarde) break;
             }
@@ -83,13 +79,9 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
 
-                }
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
                 if (besteWaarde <= alpha) break;
 

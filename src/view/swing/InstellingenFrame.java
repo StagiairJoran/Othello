@@ -32,17 +32,24 @@ public class InstellingenFrame extends JFrame {
     private java.util.List<JRadioButton> witteComputerItems = new ArrayList<>();
     private java.util.List<JRadioButton> zwarteComputerItems = new ArrayList<>();
 
+    private JComboBox witteComboBox ;
+    private JComboBox zwarteComboBox;
+
 
     public InstellingenFrame(OthelloFrame frame) {
-        frame.comboBox.setVisible(true);
-        frame.comboLabel.setVisible(true);
+        Integer[] getallen = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        witteComboBox = new JComboBox(getallen);
+        zwarteComboBox = new JComboBox(getallen);
 
         JPanel wit = new JPanel(new BorderLayout());
         JLabel witteSpelerLabel = new JLabel("Witte speler");
         witteSpelerLabel.setFont(new Font("Jokerman", Font.BOLD, 18));
         wit.add(witteSpelerLabel, BorderLayout.NORTH);
-        wit.add(maakComputerOpties(frame, Kleur.WIT), BorderLayout.CENTER);
-        wit.add(maakCalculatorPanel(frame, Kleur.WIT), BorderLayout.SOUTH);
+        JPanel witCenter = new JPanel(new BorderLayout());
+
+        witCenter.add(maakComputerOpties(frame, Kleur.WIT), BorderLayout.NORTH);
+        witCenter.add(maakCalculatorPanel(frame, Kleur.WIT), BorderLayout.CENTER);
+        wit.add(witCenter, BorderLayout.CENTER);
         this.add(wit, BorderLayout.WEST);
 
 
@@ -50,8 +57,10 @@ public class InstellingenFrame extends JFrame {
         JLabel zwarteSpelerLabel = new JLabel("Zwarte speler");
         zwarteSpelerLabel.setFont(new Font("Jokerman", Font.BOLD, 18));
         zwart.add(zwarteSpelerLabel, BorderLayout.NORTH);
-        zwart.add(maakComputerOpties(frame, Kleur.ZWART), BorderLayout.CENTER);
-        zwart.add(maakCalculatorPanel(frame, Kleur.ZWART), BorderLayout.SOUTH);
+        JPanel center = new JPanel(new BorderLayout());
+        center.add(maakComputerOpties(frame, Kleur.ZWART), BorderLayout.NORTH);
+        center.add(maakCalculatorPanel(frame, Kleur.ZWART), BorderLayout.CENTER);
+        zwart.add(center, BorderLayout.CENTER);
         this.add(zwart, BorderLayout.EAST);
 
         JButton exitButton = new JButton("Bevestig");
@@ -100,57 +109,73 @@ public class InstellingenFrame extends JFrame {
             }
         });
 
-        this.setSize(500, 300);
 
         frame.setEnabled(false);
+        this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    public void herlaad(OthelloFrame frame){
-        for (JRadioButton radioButton : witteCalculatorItems){
-          try {
-              radioButton.setEnabled(true);
-              if (radioButton.getText().equals(frame.witteComputer.getHeuristicCalculator().getClass().getSimpleName()))
-                  radioButton.setSelected(true);
-          }catch (NullPointerException e){
-              radioButton.setEnabled(false);
-          }
-        }
-        for (JRadioButton radioButton : zwarteCalculatorItems){
-            if(radioButton.getText().equals(frame.zwarteComputer.getHeuristicCalculator().getClass().getSimpleName())) radioButton.setSelected(true);
-        }
-        for (JRadioButton radioButton : witteComputerItems){
+    public void herlaad(OthelloFrame frame) {
+        for (JRadioButton radioButton : witteCalculatorItems) {
             try {
-                if(radioButton.getText().equals(frame.witteComputer.getClass().getSimpleName())) radioButton.setSelected(true);
+                radioButton.setEnabled(true);
+                if (radioButton.getText().equals(frame.witteComputer.getHeuristicCalculator().getClass().getSimpleName()))
+                    radioButton.setSelected(true);
+            } catch (NullPointerException e) {
+                radioButton.setEnabled(false);
+            }
+        }
+        for (JRadioButton radioButton : zwarteCalculatorItems) {
+            if (radioButton.getText().equals(frame.zwarteComputer.getHeuristicCalculator().getClass().getSimpleName()))
+                radioButton.setSelected(true);
+        }
+        for (JRadioButton radioButton : witteComputerItems) {
+            try {
+                if (radioButton.getText().equals(frame.witteComputer.getClass().getSimpleName()))
+                    radioButton.setSelected(true);
 
-            }catch (NullPointerException ignored){
+            } catch (NullPointerException ignored) {
 
 
             }
         }
 
-        for (JRadioButton radioButton : zwarteComputerItems){
-            if(radioButton.getText().equals(frame.zwarteComputer.getClass().getSimpleName())) radioButton.setSelected(true);
+        for (JRadioButton radioButton : zwarteComputerItems) {
+            if (radioButton.getText().equals(frame.zwarteComputer.getClass().getSimpleName()))
+                radioButton.setSelected(true);
         }
+
+
+        try {
+            witteComboBox.setEnabled(true);
+            witteComboBox.setSelectedItem(frame.witteComputer.getAantalStappen());
+
+        } catch (NullPointerException e) {
+
+            witteComboBox.setEnabled(false);
+        }
+        zwarteComboBox.setSelectedItem(frame.zwarteComputer.getAantalStappen());
+
         this.repaint();
     }
 
     private JPanel maakCalculatorPanel(OthelloFrame frame, Kleur kleur) {
-        ButtonGroup witteCalculatorGroup = new ButtonGroup();
-        JPanel witteCalculatorOpties = new JPanel(new GridLayout(HeuristicCalculator.geefAlleCalculators().size() + 1,0));
+        ButtonGroup calculatorGroup = new ButtonGroup();
+        JPanel paneel = new JPanel(new BorderLayout());
+        JPanel calculatorOpties = new JPanel(new GridLayout(HeuristicCalculator.geefAlleCalculators().size() + 1, 0));
         JLabel label = new JLabel("Calculator keuze");
         label.setFont(new Font("Jokerman", Font.PLAIN, 13));
-        witteCalculatorOpties.add(label);
+        calculatorOpties.add(label);
 
-        for(HeuristicCalculator calculator : HeuristicCalculator.geefAlleCalculators()){
+        for (HeuristicCalculator calculator : HeuristicCalculator.geefAlleCalculators()) {
             JRadioButton computerButton = new JRadioButton(calculator.getClass().getSimpleName());
 
-            if(kleur == Kleur.WIT){
+            if (kleur == Kleur.WIT) {
                 witteCalculatorItems.add(computerButton);
-            }else {
+            } else {
                 zwarteCalculatorItems.add(computerButton);
             }
 
@@ -158,49 +183,52 @@ public class InstellingenFrame extends JFrame {
                 frame.getComputer(kleur).setHeuristicCalculator(calculator);
                 herlaad(frame);
             });
-            witteCalculatorGroup.add(computerButton);
-            witteCalculatorOpties.add(computerButton);
+            calculatorGroup.add(computerButton);
+            calculatorOpties.add(computerButton);
         }
-        return witteCalculatorOpties;
+        paneel.add(calculatorOpties, BorderLayout.CENTER);
+        paneel.add(maakAantalStappenPaneel(frame, kleur), BorderLayout.SOUTH);
+
+        return paneel;
     }
 
-    private JPanel maakComputerOpties(OthelloFrame frame, Kleur kleur)  {
+    private JPanel maakComputerOpties(OthelloFrame frame, Kleur kleur) {
         ButtonGroup buttonGroup = new ButtonGroup();
 
 
-        JPanel computerOpties = new JPanel(new GridLayout(Computer.geefAlleComputers().size() + 2,0));
+        JPanel computerOpties = new JPanel(new GridLayout(Computer.geefAlleComputers().size() + 2, 0));
 
         JLabel label = new JLabel("Computer keuze");
         label.setFont(new Font("Jokerman", Font.PLAIN, 12));
         computerOpties.add(label);
         witteSpelerButton = new JRadioButton("Speler");
-        if(kleur == Kleur.WIT){
+        if (kleur == Kleur.WIT) {
             witteSpelerButton.addActionListener(e -> {
                 frame.setComputer(kleur, null);
                 herlaad(frame);
             });
-        }else {
+        } else {
             witteSpelerButton.setEnabled(false);
         }
         witteSpelerButton.setSelected(true);
 
         buttonGroup.add(witteSpelerButton);
         computerOpties.add(witteSpelerButton);
-        for(Computer computer : Computer.geefAlleComputers()){
+        for (Computer computer : Computer.geefAlleComputers()) {
             JRadioButton computerButton = new JRadioButton(computer.getClass().getSimpleName());
 
-            if(kleur == Kleur.WIT){
+            if (kleur == Kleur.WIT) {
                 witteComputerItems.add(computerButton);
-            }else {
+            } else {
                 zwarteComputerItems.add(computerButton);
             }
 
             computerButton.addActionListener(e -> {
-                if(kleur == Kleur.WIT) {
+                if (kleur == Kleur.WIT) {
                     computer.setKleur(Kleur.WIT);
                     frame.witteComputer = computer;
 
-                }else {
+                } else {
                     computer.setKleur(Kleur.ZWART);
                     frame.zwarteComputer = computer;
                 }
@@ -214,5 +242,41 @@ public class InstellingenFrame extends JFrame {
         return computerOpties;
     }
 
+    private JPanel maakAantalStappenPaneel(OthelloFrame frame, Kleur kleur) {
+
+        JComboBox comboBox;
+
+        if (kleur == Kleur.WIT) {
+            comboBox = witteComboBox;
+            try {
+                comboBox.setSelectedItem(frame.witteComputer.getAantalStappen());
+
+            } catch (NullPointerException e) {
+
+                comboBox.setEnabled(false);
+            }
+        } else {
+            comboBox = zwarteComboBox;
+            comboBox.setSelectedItem(frame.zwarteComputer.getAantalStappen());
+
+        }
+
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (kleur == Kleur.WIT) {
+                    frame.witteComputer.setAantalStappen((Integer) comboBox.getSelectedItem());
+                } else {
+                    frame.zwarteComputer.setAantalStappen((Integer) comboBox.getSelectedItem());
+
+                }
+            }
+        });
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Aantal stappen"));
+        panel.add(comboBox);
+        return panel;
+    }
 
 }

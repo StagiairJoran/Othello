@@ -25,8 +25,6 @@ public class OthelloFrame extends JFrame {
     JLabel spelerLabel;
     OthelloBord othelloBord;
     JProgressBar computerProgressBar = new JProgressBar();
-    JComboBox comboBox;
-    JLabel comboLabel;
     MenuBar menuBar;
     TreeFrame treeFrame;
     int teller = 0;
@@ -38,8 +36,7 @@ public class OthelloFrame extends JFrame {
         this.spel = new Spel();
         this.spelerLabel = new JLabel("Witte speler aan de beurt");
         othelloBord = new OthelloBord(spel, this);
-        this.comboBox = maakComboBox();
-        this.comboLabel = new JLabel("Aantal stappen:");
+
         init();
 
     }
@@ -57,8 +54,6 @@ public class OthelloFrame extends JFrame {
         JPanel paneel = new JPanel();
         paneel.add(computerProgressBar, BorderLayout.NORTH);
         paneel.add(informationPanel, BorderLayout.SOUTH);
-        paneel.add(comboLabel, BorderLayout.SOUTH);
-        paneel.add(comboBox, BorderLayout.SOUTH);
         this.add(paneel, BorderLayout.SOUTH);
 
         this.pack();
@@ -88,49 +83,7 @@ public class OthelloFrame extends JFrame {
 
 
 
-    /*
-     * Toont een scherm met keuzes voor computertegenstanders
-     */
-    protected void toonComputerOpties() {
-        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "NewMiniMax"};
 
-        comboBox.setVisible(true);
-        comboLabel.setVisible(true);
-        int aantalStappen = zwarteComputer.getAantalStappen();
-
-        int keuze = JOptionPane.showOptionDialog(this,
-                "Tegen welke computer wil je spelen?",
-                "Computerkeuze",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.DEFAULT_OPTION,
-                null,
-                computerOpties, computerOpties[0]);
-        switch (keuze) {
-            case 0:
-                zwarteComputer = new MiniMaxAlphaBetaComputer(Kleur.ZWART);
-                this.setTitle("Othello MiniMax Alpha Beta");
-
-                break;
-            case 1:
-                zwarteComputer = new MiniMaxComputer(Kleur.ZWART);
-                this.setTitle("Othello MiniMax");
-                break;
-            case 3:
-                zwarteComputer = new NewMiniMaxComputer(Kleur.ZWART);
-                this.setTitle("Othello NewMiniMax");
-
-                break;
-            default:
-                comboBox.setVisible(false);
-                comboLabel.setVisible(false);
-                zwarteComputer = new HeuristicComputer(Kleur.ZWART);
-                this.setTitle("Othello MiniMax Heuristic");
-
-                break;
-        }
-        zwarteComputer.setAantalStappen(aantalStappen);
-
-    }
 
 
     /*
@@ -175,7 +128,6 @@ public class OthelloFrame extends JFrame {
      * Start de computerworker die op de achtergrond de zet voor de computer zal berekenen
      */
     private void doeComputerZet() {
-        comboBox.setEnabled(false);
 
         ComputerWorker computerWorker;
         if (spel.getKleurAanDeBeurt() == Kleur.ZWART){
@@ -185,7 +137,6 @@ public class OthelloFrame extends JFrame {
         }
         computerWorker.addPropertyChangeListener(evt -> {
             if ("state".equals(evt.getPropertyName()) && (SwingWorker.StateValue.DONE.equals(evt.getNewValue()))) {
-                comboBox.setEnabled(true);
 
                 if (treeFrame != null) {
                     treeFrame.dispose();
