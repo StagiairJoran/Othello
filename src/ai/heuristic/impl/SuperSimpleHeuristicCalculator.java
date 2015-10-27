@@ -9,15 +9,13 @@ import model.Kleur;
  * on 6/10/15.
  * SimpelHeuristicCalculator berekent een heuristische waarde van een spelbord
  * Gebaseerd op 3 factoren:
- ** Aantal vakken elke speler bezit
- ** Aantal zetten dat elke speler kan doen
- ** Aantal hoeken van een spelbord dat elke speler bezit
+ * * Aantal vakken elke speler bezit
+ * * Aantal zetten dat elke speler kan doen
+ * * Aantal hoeken van een spelbord dat elke speler bezit
  */
 public class SuperSimpleHeuristicCalculator extends HeuristicCalculator {
     public double getHeuristicValue(Bord bord, Kleur kleur) {
-
-
-        return getCoinParityHeuristicValue(bord, kleur) ;
+        return getCoinParityHeuristicValue(bord, kleur);
     }
 
 
@@ -40,10 +38,7 @@ public class SuperSimpleHeuristicCalculator extends HeuristicCalculator {
         }
 
         return 100 * (aantalMax - aantalMin) / (aantalMax + aantalMin);
-
-
     }
-
 
 
 }

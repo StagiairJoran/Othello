@@ -1,12 +1,7 @@
 package view.swing;
 
 import ai.computer.api.Computer;
-import ai.computer.impl.HeuristicComputer;
-import ai.computer.impl.MiniMaxAlphaBetaComputer;
-import ai.computer.impl.MiniMaxComputer;
-import ai.computer.impl.NewMiniMaxComputer;
-import ai.heuristic.api.HeuristicCalculator;
-import ai.heuristic.impl.CompleteHeuristicCalculator;
+import ai.computer.impl.MiniMaxComputerJoran;
 import model.Kleur;
 import model.Spel;
 
@@ -30,7 +25,7 @@ public class OthelloFrame extends JFrame {
     int teller = 0;
     protected boolean toonTreeFrame = false;
     protected Computer witteComputer;
-    protected Computer zwarteComputer = new MiniMaxComputer(Kleur.ZWART);
+    protected Computer zwarteComputer = new MiniMaxComputerJoran(Kleur.ZWART);
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
@@ -110,7 +105,7 @@ public class OthelloFrame extends JFrame {
         } else if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
 
 
-            doeComputerZet();
+             doeComputerZet();
 
         } else if (spel.getKleurAanDeBeurt() == Kleur.WIT && witteComputer != null) {
             // Computer tegen computer

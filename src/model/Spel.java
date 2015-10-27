@@ -1,8 +1,6 @@
 package model;
 
-import ai.computer.api.Computer;
 import ai.Zet;
-import ai.computer.impl.MiniMaxComputer;
 
 /**
  * Created by jorandeboever

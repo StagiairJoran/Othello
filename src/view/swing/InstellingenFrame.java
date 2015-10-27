@@ -208,7 +208,7 @@ public class InstellingenFrame extends JFrame {
         buttonGroup.add(witteSpelerButton);
         computerOpties.add(witteSpelerButton);
         for (Computer computer : Computer.geefAlleComputers()) {
-            JRadioButton computerButton = new JRadioButton(computer.getClass().getSimpleName());
+            JRadioButton computerButton = new JRadioButton(computer.toString());
 
             if (kleur == Kleur.WIT) {
                 witteComputerItems.add(computerButton);

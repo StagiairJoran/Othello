@@ -15,12 +15,12 @@ import java.util.List;
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe
  */
-public class MiniMaxComputer extends Computer {
+public class MiniMaxComputerJoran extends Computer {
 
     private Zet ultiemeZet;
 
 
-    public MiniMaxComputer(Kleur kleur) {
+    public MiniMaxComputerJoran(Kleur kleur) {
         super(kleur);
 
     }
@@ -92,5 +92,10 @@ public class MiniMaxComputer extends Computer {
 
     public int getAantalStappen() {
         return aantalStappen;
+    }
+
+    @Override
+    public String toString() {
+        return "Joran: MiniMax";
     }
 }

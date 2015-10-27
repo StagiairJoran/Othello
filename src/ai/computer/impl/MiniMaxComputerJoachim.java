@@ -14,11 +14,11 @@ import model.Kleur;
  * Computer is zwart en speelt als tweede.
  * Max heeft als kleur zwart
  */
-public class NewMiniMaxComputer  extends Computer {
+public class MiniMaxComputerJoachim extends Computer {
     private Zet ultiemeZet;
 
 
-    public NewMiniMaxComputer(Kleur kleur) {
+    public MiniMaxComputerJoachim(Kleur kleur) {
         super(kleur);
     }
 
@@ -70,5 +70,8 @@ public class NewMiniMaxComputer  extends Computer {
 
         return kindWaarde;
     }
-
+    @Override
+    public String toString() {
+        return "Joachim: MiniMax";
+    }
 }

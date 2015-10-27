@@ -12,12 +12,12 @@ import java.util.List;
  * on 6/10/15.
  * MiniMaxComputer past het minimax-algoritme toe met alpha-beta pruning
  */
-public class MiniMaxAlphaBetaComputer extends  Computer {
+public class MiniMaxAlphaBetaComputerJoran extends  Computer {
     private Zet ultiemeZet;
 
 
 
-    public MiniMaxAlphaBetaComputer(Kleur kleur) {
+    public MiniMaxAlphaBetaComputerJoran(Kleur kleur) {
         super(kleur);
 
     }
@@ -84,7 +84,10 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
         return besteWaarde;
     }
 
-
+    @Override
+    public String toString() {
+        return "Joran: MiniMax met AlphaBeta";
+    }
 
 
 }

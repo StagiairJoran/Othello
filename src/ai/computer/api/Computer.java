@@ -9,14 +9,14 @@ import model.Bord;
 import model.Kleur;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by jorandeboever
  * on 7/10/15.
  */
-public abstract class Computer extends ObservableAI{
+public abstract class Computer extends ObservableAI {
     protected HeuristicCalculator heuristicCalculator;
     protected Kleur computerKleur;
     protected int aantalStappen;
@@ -24,7 +24,7 @@ public abstract class Computer extends ObservableAI{
     public Computer(Kleur computerKleur) {
         this.computerKleur = computerKleur;
         this.heuristicCalculator = new CompleteHeuristicCalculator();
-         aantalStappen =  3;
+        this.aantalStappen = 3;
     }
 
     public Computer(Computer computer) {
@@ -60,14 +60,15 @@ public abstract class Computer extends ObservableAI{
         this.aantalStappen = aantalStappen;
     }
 
-    public static List<Computer> geefAlleComputers(){
+    public static List<Computer> geefAlleComputers() {
         List<Computer> computers = new ArrayList<>();
         computers.add(new HeuristicComputer(Kleur.ZWART));
-        computers.add(new MiniMaxComputer(Kleur.ZWART));
-        computers.add(new MiniMaxAlphaBetaComputer(Kleur.ZWART));
-        computers.add(new NewMiniMaxComputer(Kleur.ZWART));
-        computers.add(new NewMiniMaxAlphaBetaComputer(Kleur.ZWART));
-        return  computers;
+        computers.add(new MiniMaxComputerJoran(Kleur.ZWART));
+        computers.add(new MiniMaxAlphaBetaComputerJoran(Kleur.ZWART));
+        computers.add(new MiniMaxComputerJoachim(Kleur.ZWART));
+        computers.add(new MiniMaxAlphaBetaComputerJoachim(Kleur.ZWART));
+
+        return computers;
     }
 
     @Override

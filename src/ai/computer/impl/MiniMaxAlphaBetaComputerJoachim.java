@@ -8,10 +8,10 @@ import model.Kleur;
 /**
  * Created by JoachimDs on 19/10/2015.
  */
-public class NewMiniMaxAlphaBetaComputer extends Computer {
+public class MiniMaxAlphaBetaComputerJoachim extends Computer {
     private Zet ultiemeZet;
 
-    public NewMiniMaxAlphaBetaComputer(Kleur kleur) {
+    public MiniMaxAlphaBetaComputerJoachim(Kleur kleur) {
         super(kleur);
     }
 
@@ -64,5 +64,8 @@ public class NewMiniMaxAlphaBetaComputer extends Computer {
         return kindWaarde;
     }
 
-
+    @Override
+    public String toString() {
+        return "Joachim: MiniMax met AlphaBeta";
+    }
 }
