@@ -26,7 +26,7 @@ public class NewMiniMaxComputer  extends Computer {
     public Zet berekenZet(Bord bord) {
         ultiemeZet = new Zet(9, 9);
         ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
-        miniMax(bord, Kleur.ZWART, aantalStappen);
+        miniMax(bord, computerKleur, aantalStappen);
         return ultiemeZet;
     }
 

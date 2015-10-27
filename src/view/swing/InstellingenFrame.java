@@ -237,8 +237,6 @@ public class InstellingenFrame extends JFrame {
             });
             buttonGroup.add(computerButton);
             computerOpties.add(computerButton);
-
-
         }
         return computerOpties;
     }

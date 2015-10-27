@@ -9,56 +9,59 @@ import model.Kleur;
  * Created by JoachimDs on 19/10/2015.
  */
 public class NewMiniMaxAlphaBetaComputer extends Computer {
-    private Zet besteZet;
-    private double allerBestHeuristicValue;
+    private Zet ultiemeZet;
 
     public NewMiniMaxAlphaBetaComputer(Kleur kleur) {
         super(kleur);
-        allerBestHeuristicValue = Double.NEGATIVE_INFINITY;
     }
 
     @Override
     public Zet berekenZet(Bord bord) {
-        return null;
+        ultiemeZet = new Zet(9, 9);
+        ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
+        alphaBeta(bord, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, computerKleur, aantalStappen);
+        return ultiemeZet;
+
     }
 
 
+    private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleurAanZet, int aantalStappen) {
+        double kindWaarde;
 
-    private double alphaBeta(Bord bord, double alpha, double beta, Kleur kleurAanZet) {
-        double bestHeuristicValue;
-        Kleur volgendeKleurAanZet = Kleur.andereKleur(kleurAanZet);
+        if (aantalStappen == 0 || bord.geefGeldigeZetten(kleurAanZet).size() == 0) {
+            kindWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
+        } else if (kleurAanZet == computerKleur) {
+            kindWaarde = alpha;
+            for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)) {
+                Bord duplicaat = new Bord(bord);
+                duplicaat.zetPion(zet, kleurAanZet);
+                double kleinKindWaarde = alphaBeta(duplicaat, kindWaarde, beta, Kleur.andereKleur(kleurAanZet), aantalStappen - 1);
+                kindWaarde = Math.max(kleinKindWaarde, kindWaarde);
 
-        if (aantalStappen == 0) {
-            bestHeuristicValue = heuristicCalculator.getHeuristicValue(bord, kleurAanZet);
-            aantalStappen++;
-        } else if (kleurAanZet == Kleur.WIT) {
-            bestHeuristicValue = alpha;
-            for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                aantalStappen--;
-                Bord tijdelijBord = bord;
-                tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.max(alphaBeta(tijdelijBord, bestHeuristicValue, beta, volgendeKleurAanZet), bestHeuristicValue);
-                if (beta <= bestHeuristicValue){
-                    break;
+                if (aantalStappen == this.aantalStappen) {
+                    if (ultiemeZet.getWaarde() < kleinKindWaarde) {
+                        ultiemeZet = zet;
+                        ultiemeZet.setWaarde(kleinKindWaarde);
+                    }
+                    //iets voor prograssbar
                 }
+                duplicaat.setUserObject(" " + Math.round(kleinKindWaarde) + zet);
+                bord.add(duplicaat);
             }
         } else {
-            bestHeuristicValue = beta;
-            for (int i=0; i<bord.geefGeldigeZetten(kleurAanZet).size(); i++){
-                aantalStappen--;
-                Bord tijdelijBord = bord;
-                tijdelijBord.zetPion(bord.geefGeldigeZetten(kleurAanZet).get(i), kleurAanZet);
-                bestHeuristicValue = Math.min(alphaBeta(tijdelijBord, alpha, bestHeuristicValue, volgendeKleurAanZet), bestHeuristicValue);
-                if (aantalStappen == 4 && allerBestHeuristicValue < bestHeuristicValue){
-                    besteZet = bord.geefGeldigeZetten(kleurAanZet).get(i);
-                }
-                if (bestHeuristicValue <= alpha){
-                    break;
-                }
+            kindWaarde = beta;
+            for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)) {
+                Bord duplicaat = new Bord(bord);
+                duplicaat.zetPion(zet, kleurAanZet);
+                double kleinKindWaarde = alphaBeta(duplicaat, alpha, kindWaarde, Kleur.andereKleur(kleurAanZet), aantalStappen - 1);
+                kindWaarde = Math.min(kleinKindWaarde, kindWaarde);
+
+                duplicaat.setUserObject(" " + Math.round(kleinKindWaarde) + zet);
+                bord.add(duplicaat);
             }
         }
 
-        return bestHeuristicValue;
+        return kindWaarde;
     }
 
 
