@@ -1,9 +1,6 @@
 package view.swing;
 
-import ai.computer.impl.HeuristicComputer;
-import ai.computer.impl.MiniMaxAlphaBetaComputer;
-import ai.computer.impl.MiniMaxComputer;
-import ai.computer.impl.NewMiniMaxComputer;
+import ai.computer.impl.*;
 import model.Kleur;
 import model.Spel;
 
@@ -111,7 +108,7 @@ public class OthelloFrame extends JFrame {
      * Toont een scherm met keuzes voor computertegenstanders
      */
     private void toonComputerOpties() {
-        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "NewMiniMax"};
+        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "NewMiniMax", "NewAlphaBeta"};
 
         comboBox.setVisible(true);
         comboLabel.setVisible(true);
@@ -136,7 +133,10 @@ public class OthelloFrame extends JFrame {
             case 3:
                 spel.setComputer(new NewMiniMaxComputer(Kleur.ZWART));
                 this.setTitle("Othello NewMiniMax");
-
+                break;
+            case 4:
+                spel.setComputer(new NewMiniMaxAlphaBetaComputer(Kleur.ZWART));
+                this.setTitle("Othello NewMiniMaxAlphaBeta");
                 break;
             default:
                 comboBox.setVisible(false);

@@ -5,13 +5,10 @@ import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
 import ai.heuristic.api.HeuristicCalculator;
 import ai.heuristic.impl.CompleteHeuristicCalculator;
-import ai.heuristic.impl.SimpleHeuristicCalculator;
 import model.Bord;
 import model.Kleur;
-import model.OngeldigeZet;
 
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by jorandeboever
@@ -125,8 +122,6 @@ public class MiniMaxAlphaBetaComputer extends ObservableAI implements Computer {
 
             }
         }
-
-
         return besteWaarde;
     }
 
