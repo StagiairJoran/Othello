@@ -62,13 +62,9 @@ public class MiniMaxComputer extends Computer {
                     }
                     update(++i, zetten.size());
                 }
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
 
-                }
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
             }
         } else {
@@ -80,14 +76,8 @@ public class MiniMaxComputer extends Computer {
                 double childWaarde = miniMax(duplicaat, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
 
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
-
-                }
-
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
             }
         }

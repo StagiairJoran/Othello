@@ -24,31 +24,6 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
 
 
     public Zet berekenZet(Bord bord) {
-       /* //Haal mogelijke zetten op
-        List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
-       this.setDuur(zetten.size());
-        //kies beste zet
-        Zet besteZet = null;
-        double besteWaarde = Double.NEGATIVE_INFINITY;
-        int i = 0;
-        for (Zet zet : zetten) {
-            Bord duplicaat = new Bord(bord);
-            try {
-                duplicaat.zetPion(zet.getRij(), zet.getKolom(), computerKleur);
-            } catch (OngeldigeZet ongeldigeZet) {
-                ongeldigeZet.printStackTrace();
-            }
-
-            zet.setWaarde(alphaBeta(duplicaat, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Kleur.andereKleur(computerKleur), aantalStappen - 1));
-            if (zet.getWaarde() > besteWaarde || besteZet == null) {
-                besteZet = zet;
-                besteWaarde = zet.getWaarde();
-            }
-            this.setProgress(++i);
-            setChanged();
-            notifyObservers();
-        }
-        return besteZet;*/
 
         ultiemeZet = new Zet(100, 100);
         ultiemeZet.setWaarde(Double.NEGATIVE_INFINITY);
@@ -84,13 +59,9 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
                     }
                     update(++i, zetten.size());
                 }
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde) + zet);
 
-                }
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
                 if (beta <= besteWaarde) break;
             }
@@ -102,13 +73,9 @@ public class MiniMaxAlphaBetaComputer extends  Computer {
                 duplicaat.zetPion(zet.getRij(), zet.getKolom(), kleur);
                 double childWaarde = alphaBeta(duplicaat, alpha, besteWaarde, Kleur.andereKleur(kleur), aantalStappen - 1);
                 besteWaarde = Math.min(besteWaarde, childWaarde);
-                if (besteWaarde == childWaarde) {
-                    duplicaat.setUserObject("! " + Math.round(childWaarde)  + zet);
-                }
-                else {
-                    duplicaat.setUserObject("  " + Math.round(childWaarde)  + zet);
 
-                }
+                zet.setWaarde(childWaarde);
+                duplicaat.setUserObject(zet);
                 bord.add(duplicaat);
                 if (besteWaarde <= alpha) break;
 
