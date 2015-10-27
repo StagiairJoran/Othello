@@ -14,16 +14,12 @@ import model.Kleur;
  * Computer is zwart en speelt als tweede.
  * Max heeft als kleur zwart
  */
-public class NewMiniMaxComputer  extends ObservableAI implements Computer {
+public class NewMiniMaxComputer  extends Computer {
     private Zet ultiemeZet;
-    private int aantalStappen;
-    private HeuristicCalculator calculator;
-    private Kleur computerKleur;
+
 
     public NewMiniMaxComputer(Kleur kleur) {
-        calculator = new CompleteHeuristicCalculator();
-        computerKleur = kleur;
-        aantalStappen = 3;
+        super(kleur);
     }
 
     @Override
@@ -34,31 +30,13 @@ public class NewMiniMaxComputer  extends ObservableAI implements Computer {
         return ultiemeZet;
     }
 
-    @Override
-    public void setAantalStappen(int aantalStappen) {
-        this.aantalStappen = aantalStappen;
-    }
 
-    @Override
-    public int getAantalStappen() {
-        return aantalStappen;
-    }
-
-    @Override
-    public int getDuur() {
-        return 0;
-    }
-
-    @Override
-    public int getProgress() {
-        return 0;
-    }
 
     private double miniMax(Bord bord, Kleur kleurAanZet, int aantalStappen) {
         double kindWaarde;
 
         if (aantalStappen == 0 || bord.geefGeldigeZetten(kleurAanZet).size() == 0) {
-            kindWaarde = calculator.getHeuristicValue(bord, computerKleur);
+            kindWaarde = heuristicCalculator.getHeuristicValue(bord, computerKleur);
         } else if (kleurAanZet == computerKleur) {
             kindWaarde = Double.NEGATIVE_INFINITY;
             for (Zet zet : bord.geefGeldigeZetten(kleurAanZet)){

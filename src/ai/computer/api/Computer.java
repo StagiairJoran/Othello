@@ -1,21 +1,51 @@
 package ai.computer.api;
 
 import ai.Zet;
+import ai.computer.ObservableAI;
+import ai.heuristic.api.HeuristicCalculator;
+import ai.heuristic.impl.CompleteHeuristicCalculator;
 import model.Bord;
-
-import java.util.Observable;
+import model.Kleur;
 
 /**
  * Created by jorandeboever
  * on 7/10/15.
  */
-public interface Computer {
-    Zet berekenZet(Bord bord);
+public abstract class Computer extends ObservableAI{
+    protected HeuristicCalculator heuristicCalculator;
+    protected Kleur computerKleur;
+    protected int aantalStappen;
 
-    void setAantalStappen(int aantalStappen);
-    int getAantalStappen();
+    public Computer(Kleur computerKleur) {
+        this.computerKleur = computerKleur;
+        this.heuristicCalculator = new CompleteHeuristicCalculator();
+         aantalStappen =  3;
+    }
 
-    //ObservableAI methodes
-    int getDuur();
-    int getProgress();
+    public abstract Zet berekenZet(Bord bord);
+
+
+    public HeuristicCalculator getHeuristicCalculator() {
+        return heuristicCalculator;
+    }
+
+    public void setHeuristicCalculator(HeuristicCalculator heuristicCalculator) {
+        this.heuristicCalculator = heuristicCalculator;
+    }
+
+    public Kleur getKleur() {
+        return computerKleur;
+    }
+
+    public void setKleur(Kleur computerKleur) {
+        this.computerKleur = computerKleur;
+    }
+
+    public int getAantalStappen() {
+        return aantalStappen;
+    }
+
+    public void setAantalStappen(int aantalStappen) {
+        this.aantalStappen = aantalStappen;
+    }
 }

@@ -1,34 +1,25 @@
 package ai.computer.impl;
 
 import ai.Zet;
-import ai.computer.ObservableAI;
 import ai.computer.api.Computer;
-import ai.heuristic.api.HeuristicCalculator;
-import ai.heuristic.impl.CompleteHeuristicCalculator;
 import model.Bord;
 import model.Kleur;
 import model.OngeldigeZet;
 
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by jorandeboever
  * on 6/10/15.
  * HeuristicComputer kiest de zet die uitkomt bij het bord met de beste heuristische waarde
  */
-public class HeuristicComputer extends ObservableAI implements Computer {
-    private HeuristicCalculator heuristicCalculator;
-    private Kleur computerKleur;
+public class HeuristicComputer extends Computer {
 
-    public HeuristicComputer(Kleur kleur) {
-        this.heuristicCalculator = new CompleteHeuristicCalculator();
-
-        this.computerKleur = kleur;
+    public HeuristicComputer(Kleur computerKleur) {
+        super(computerKleur);
     }
 
 
-    @Override
     public Zet berekenZet(Bord bord) {
         List<Zet> zetten = bord.geefGeldigeZetten(computerKleur);
         setDuur(zetten.size());
@@ -57,15 +48,6 @@ public class HeuristicComputer extends ObservableAI implements Computer {
 
         }
         return besteZet;
-    }
-
-    @Override
-    public void setAantalStappen(int aantalStappen) {
-        System.err.println("Heuristic computer heeft geen aantal stappen");
-    }
-
-    public int getAantalStappen() {
-        return 0;
     }
 
 

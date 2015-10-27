@@ -14,8 +14,6 @@ public class Bord extends DefaultMutableTreeNode{
     private int grootteBord = 8;
     protected Speelvak[][] speelvakken ;
 
-
-
     public Bord()  {
         speelvakken = new Speelvak[grootteBord][grootteBord];
 

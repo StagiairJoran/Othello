@@ -19,7 +19,7 @@ public class ComputerWorker extends SwingWorker implements Observer {
         this.spel = spel;
         this.computerProgressBar = computerProgressBar;
         computerProgressBar.setValue(0);
-        Observable observable = (Observable) spel.getComputer();
+        Observable observable =  spel.getComputer();
         observable.addObserver(this);
     }
 

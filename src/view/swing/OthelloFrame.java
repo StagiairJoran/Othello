@@ -1,6 +1,10 @@
 package view.swing;
 
-import ai.computer.impl.*;
+import ai.computer.impl.HeuristicComputer;
+import ai.computer.impl.MiniMaxAlphaBetaComputer;
+import ai.computer.impl.MiniMaxComputer;
+import ai.computer.impl.NewMiniMaxComputer;
+import ai.heuristic.impl.SimpleHeuristicCalculator;
 import model.Kleur;
 import model.Spel;
 
@@ -25,6 +29,7 @@ public class OthelloFrame extends JFrame {
     JLabel comboLabel;
     ComputerWorker computerWorker;
     TreeFrame treeFrame;
+    int teller = 0;
 
     public OthelloFrame() throws HeadlessException {
         this.spel = new Spel();
@@ -88,6 +93,7 @@ public class OthelloFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spel = new Spel();
+                teller = 0;
                 othelloBord.setSpel(spel);
                 herlaad();
                 toonComputerOpties();
@@ -108,7 +114,7 @@ public class OthelloFrame extends JFrame {
      * Toont een scherm met keuzes voor computertegenstanders
      */
     private void toonComputerOpties() {
-        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "NewMiniMax", "NewAlphaBeta"};
+        Object[] computerOpties = {"MiniMax AlphaBeta", "MiniMax", "Heuristic", "NewMiniMax"};
 
         comboBox.setVisible(true);
         comboLabel.setVisible(true);
@@ -133,10 +139,7 @@ public class OthelloFrame extends JFrame {
             case 3:
                 spel.setComputer(new NewMiniMaxComputer(Kleur.ZWART));
                 this.setTitle("Othello NewMiniMax");
-                break;
-            case 4:
-                spel.setComputer(new NewMiniMaxAlphaBetaComputer(Kleur.ZWART));
-                this.setTitle("Othello NewMiniMaxAlphaBeta");
+
                 break;
             default:
                 comboBox.setVisible(false);
@@ -171,8 +174,19 @@ public class OthelloFrame extends JFrame {
         if (spel.isSpelGedaan()) {
             toonWinVenster();
         } else if (spel.getKleurAanDeBeurt() == Kleur.ZWART) {
+
+            int aantalStappen = spel.getComputer().getAantalStappen();
+            spel.setComputer(new MiniMaxComputer(Kleur.ZWART));
+            spel.getComputer().setAantalStappen(aantalStappen);
             startComputerWorker();
 
+        } else if (spel.getKleurAanDeBeurt() == Kleur.WIT && teller++ > 0) {
+            // Computer tegen computer
+           /* int aantalStappen = spel.getComputer().getAantalStappen();
+            spel.setComputer(new MiniMaxComputer(Kleur.WIT));
+            spel.getComputer().setHeuristicCalculator(new SimpleHeuristicCalculator());
+            spel.getComputer().setAantalStappen(aantalStappen);
+            startComputerWorker();*/
         }
 
         this.toFront();
@@ -202,8 +216,8 @@ public class OthelloFrame extends JFrame {
                     if (treeFrame != null) {
                         treeFrame.dispose();
                     }
-                    treeFrame = new TreeFrame(spel.getBord());
-
+                 //   treeFrame = new TreeFrame(spel.getBord());
+                    System.out.printf("herladen...");
                     herlaad();
 
                 }
