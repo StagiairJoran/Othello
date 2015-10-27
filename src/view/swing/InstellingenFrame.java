@@ -66,6 +66,7 @@ public class InstellingenFrame extends JFrame {
         JButton exitButton = new JButton("Bevestig");
         exitButton.addActionListener(e -> {
             this.dispose();
+            frame.herlaad();
             frame.setEnabled(true);
         });
         this.add(exitButton, BorderLayout.SOUTH);

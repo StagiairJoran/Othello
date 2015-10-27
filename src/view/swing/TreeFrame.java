@@ -60,7 +60,7 @@ public class TreeFrame extends JFrame {
             stringBuilder.append(zet.toString());
 
             if(zet.getWaarde() == besteWaarde && !besteWaardeGevonden){
-                stringBuilder.append(" !");
+                stringBuilder.append(" *");
                 besteWaardeGevonden = true;
             }
 
