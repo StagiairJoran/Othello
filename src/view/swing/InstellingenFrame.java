@@ -1,24 +1,16 @@
 package view.swing;
 
 import ai.computer.api.Computer;
-import ai.computer.impl.HeuristicComputer;
-import ai.computer.impl.MiniMaxAlphaBetaComputer;
-import ai.computer.impl.MiniMaxComputer;
-import ai.computer.impl.NewMiniMaxComputer;
 import ai.heuristic.api.HeuristicCalculator;
-import com.sun.tools.javac.comp.Flow;
-import model.Bord;
 import model.Kleur;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by Joachim De Schryver & Joran De Boever
